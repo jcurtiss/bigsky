@@ -1,4 +1,0 @@
-INDEX VERSION 1.126+C:\Users\Jeremy\ShoppingSidekick\bigsky\.metadata\.plugins\org.eclipse.jdt.core
-3659886160.index
-1123406314.index
-3171730323.index
