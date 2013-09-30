@@ -1,1 +1,3 @@
+#extensions to ignore
 .metadata
+.class

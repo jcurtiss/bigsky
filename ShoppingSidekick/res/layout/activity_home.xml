@@ -8,9 +8,57 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".HomeActivity" >
 
-    <TextView
+    <Button
+        android:id="@+id/goToScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="128dp"
+        android:onClick="goToScan"
+        android:text="Scan" />
+
+    <Button
+        android:id="@+id/goToSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/goToScan"
+        android:layout_below="@+id/goToScan"
+        android:text="Settings" />
+
+    <Button
+        android:id="@+id/goToFoodFinder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/goToScan"
+        android:layout_below="@+id/goToSettings"
+        android:layout_marginRight="33dp"
+        android:text="Food Finder" />
+
+    <Button
+        android:id="@+id/goToCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/goToScan"
+        android:layout_below="@+id/goToFoodFinder"
+        android:text="Calendar" />
+
+    <Button
+        android:id="@+id/goToRecentActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/goToScan"
+        android:layout_below="@+id/goToCalendar"
+        android:text="Recent Activity" />
+
+    <Button
+        android:id="@+id/goToRecipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/goToScan"
+        android:layout_below="@+id/goToRecentActivity"
+        android:layout_marginTop="266dp"
+        android:text="Recipes" />
 
 </RelativeLayout>

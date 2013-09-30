@@ -41,9 +41,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f0b0002;
-        public static final int fullscreen_content=0x7f0b0000;
-        public static final int fullscreen_content_controls=0x7f0b0001;
+        public static final int action_settings=0x7f0b0008;
+        public static final int fullscreen_content=0x7f0b0006;
+        public static final int fullscreen_content_controls=0x7f0b0007;
+        public static final int goToCalendar=0x7f0b0003;
+        public static final int goToFoodFinder=0x7f0b0002;
+        public static final int goToRecentActivity=0x7f0b0004;
+        public static final int goToRecipes=0x7f0b0005;
+        public static final int goToScan=0x7f0b0000;
+        public static final int goToSettings=0x7f0b0001;
     }
     public static final class layout {
         public static final int activity_calendar=0x7f030000;
