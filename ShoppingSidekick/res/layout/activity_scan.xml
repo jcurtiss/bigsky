@@ -8,9 +8,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ScanActivity" >
 
-    <TextView
+    <Button
+        android:id="@+id/scanToHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="31dp"
+        android:text="Home" />
+
+    <Button
+        android:id="@+id/scanToResults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scanToHome"
+        android:layout_below="@+id/scanToHome"
+        android:layout_marginTop="36dp"
+        android:text="Results" />
 
 </RelativeLayout>
