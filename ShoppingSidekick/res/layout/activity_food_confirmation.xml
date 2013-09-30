@@ -8,9 +8,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".FoodConfirmationActivity" >
 
-    <TextView
+    <Button
+        android:id="@+id/confirmToFinder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="19dp"
+        android:text="Food Finder" />
+
+    <Button
+        android:id="@+id/confirmToHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/confirmToFinder"
+        android:layout_below="@+id/confirmToFinder"
+        android:layout_marginTop="32dp"
+        android:text="Home" />
 
 </RelativeLayout>

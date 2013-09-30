@@ -2,7 +2,10 @@ package com.ISU.shoppingsidekick;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
 public class RecentActionsActivity extends Activity {
 
@@ -10,6 +13,15 @@ public class RecentActionsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recent_actions);
+		
+        Button goToHomeBtn = (Button) findViewById(R.id.recentToHome);
+        goToHomeBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(RecentActionsActivity.this, HomeActivity.class);
+				startActivity(i);
+			}
+		});
 	}
 
 	@Override
