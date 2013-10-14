@@ -8,23 +8,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ScanActivity" >
 
-    <Button
-        android:id="@+id/scanToHome"
+    <Button android:id="@+id/scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="31dp"
-        android:layout_marginTop="31dp"
-        android:text="Home" />
+        android:layout_centerHorizontal="true"
+        android:text="@string/scan" />
+    
+    <TextView
+	    android:id="@+id/scan_format"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textIsSelectable="true"
+	    android:layout_centerHorizontal="true"
+	    android:layout_below="@id/scan_button" />
+	<TextView
+	    android:id="@+id/scan_content"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textIsSelectable="true"
+	    android:layout_centerHorizontal="true"
+	    android:layout_below="@id/scan_format" />
+    
+   </RelativeLayout>
 
-    <Button
-        android:id="@+id/scanToResults"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/scanToHome"
-        android:layout_below="@+id/scanToHome"
-        android:layout_marginTop="36dp"
-        android:text="Results" />
-
-</RelativeLayout>

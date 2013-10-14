@@ -16,6 +16,8 @@
     <string name="title_activity_splash">Shopping\nSidekick</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="scan">scan</string>
     <string name="open">Open</string>
     
+
 </resources>
