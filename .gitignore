@@ -1,0 +1,7 @@
+#extensions to ignore
+.metadata
+*.class
+ShoppingSidekick/bin/
+ShoppingSidekick/gen/
+*.apk
+/R.java
