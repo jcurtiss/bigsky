@@ -38,7 +38,9 @@ public class FoodFinderActivity extends Activity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				populateResultsList(getSearchResults(getSearchFieldText()));
+				String st = getSearchFieldText();
+				List<Food> list = getSearchResults(st);
+				populateResultsList(list);
 			}
 		});
 	}
@@ -77,6 +79,8 @@ public class FoodFinderActivity extends Activity {
 	}
 	
 	private void populateResultsList(List<Food> results){
-		// TODO
+		final ArrayAdapter<Food> adapter;
+		adapter = new ArrayAdapter<Food>(this, R.layout.activity_food_finder,
+										R.id.searchResultsList, results);
 	}
 }
