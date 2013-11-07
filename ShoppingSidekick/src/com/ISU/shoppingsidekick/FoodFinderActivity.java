@@ -1,5 +1,5 @@
 package com.ISU.shoppingsidekick;
-
+import com.Database.API.*;
 import java.util.List;
 
 import android.app.Activity;
@@ -10,8 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import com.ISU.shoppingsidekick.DatabaseAPI.Food;
 
 /**
  * Food Finder page that allows the user to search for a particular food item
@@ -38,9 +36,20 @@ public class FoodFinderActivity extends Activity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String st = getSearchFieldText();
-				List<Food> list = getSearchResults(st);
-				populateResultsList(list);
+				Thread thread = new Thread()
+				{
+					@Override
+		            public void run()
+					{
+						synchronized(this)
+						{
+							String st = getSearchFieldText();
+							List<Food> list = getSearchResults(st);
+							populateResultsList(list);
+						};
+					}
+				};
+				thread.start();
 			}
 		});
 	}
@@ -70,12 +79,11 @@ public class FoodFinderActivity extends Activity {
 		DatabaseAPI d = new DatabaseAPI();
 		List<Food> setFromName = d.getFoodByFuzzyNameMatch(searchText);
 		List<Food> setFromGroup = d.getFoodByFuzzyFoodGroupMatch(searchText);
-		List<Food> toReturn = setFromName;
 		for(int i = 0; i < setFromGroup.size(); i++){
-			if(!toReturn.contains(setFromGroup.get(i)))
-				toReturn.add((Food) setFromGroup.get(i));
+			if(!setFromName.contains(setFromGroup.get(i)))
+				setFromName.add((Food) setFromGroup.get(i));
 		}
-		return toReturn;
+		return setFromName;
 	}
 	
 	private void populateResultsList(List<Food> results){
