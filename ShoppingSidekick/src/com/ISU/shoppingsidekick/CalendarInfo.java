@@ -1,0 +1,37 @@
+package com.ISU.shoppingsidekick;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.KeyEvent;
+import android.view.Menu;
+
+public class CalendarInfo extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_calendar_info);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.calendar_info, menu);
+		return true;
+	}
+	
+	//Override the onKeyDown method  
+    @Override  
+    public boolean onKeyDown(int keyCode, KeyEvent event)  
+    {  
+        //replaces the default 'Back' button action  
+        if(keyCode==KeyEvent.KEYCODE_BACK)  
+        {  
+            //Go back to calendar activity when back button is pressed  
+            this.startActivity(new Intent(CalendarInfo.this, CalendarActivity.class));  
+        }  
+        return true;  
+    }  
+
+}

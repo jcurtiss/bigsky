@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -90,10 +91,11 @@ public class CalendarActivity extends Activity {
 	        	// return chosen date as string format 
 	        	intent.putExtra("date", android.text.format.DateFormat.format("yyyy-MM", month)+"-"+day);
 	        	setResult(RESULT_OK, intent);
+	        	Intent i = new Intent(CalendarActivity.this, CalendarInfo.class);
+				startActivity(i);
+			}
 	        	finish();
 	        }
-	        
-	    }
 	});
 }
 
@@ -133,6 +135,19 @@ public Runnable calendarUpdater = new Runnable() {
 		adapter.notifyDataSetChanged();
 	}
 };
+
+//Override the onKeyDown method  
+@Override  
+public boolean onKeyDown(int keyCode, KeyEvent event)  
+{  
+    //replaces the default 'Back' button action  
+    if(keyCode==KeyEvent.KEYCODE_BACK)  
+    {  
+      
+        this.startActivity(new Intent(CalendarActivity.this, HomeActivity.class));  
+    }  
+    return true;  
+}  
 
 
 	@Override
