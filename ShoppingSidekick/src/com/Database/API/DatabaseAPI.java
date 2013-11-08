@@ -2,6 +2,7 @@ package com.Database.API;
 import java.sql.*;	
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +47,11 @@ public class DatabaseAPI {
 	
 	//Public get methods
 	
-	
+	/**
+	 * Gets a recipe with the given name
+	 * @param Name Name to loop for
+	 * @return The recipe that matches the name if any
+	 */
 	public Recipe getRecipeByName(String Name)
 	{
 		Recipe recipe = new Recipe();
@@ -67,6 +72,11 @@ public class DatabaseAPI {
 		return null;
 	}
 	
+	/**
+	 * Gets all recipes that contain the food id
+	 * @param ID The id to look for
+	 * @return All the recipes that fit the criteria
+	 */
 	public ArrayList<Recipe> getRecipesByFoodID(String ID)
 	{
 		ArrayList<Recipe> recipes = new ArrayList<Recipe>();
@@ -108,6 +118,7 @@ public class DatabaseAPI {
 				account.setUserID(rs.getString("UserID"));
 				account.setID(rs.getInt("AccountID"));
 				account.setUsersTable(rs.getString("UserTable"));
+				account.setNotifications(rs.getBoolean("Notifications"));
 				return account;
 			}
 		} catch (SQLException e) {
@@ -135,6 +146,7 @@ public class DatabaseAPI {
 				account.setUserID(rs.getString("UserID"));
 				account.setID(rs.getInt("AccountID"));
 				account.setUsersTable(rs.getString("UserTable"));
+				account.setNotifications(rs.getBoolean("Notifications"));
 				return account;
 			}
 		} catch (SQLException e) {
@@ -321,7 +333,7 @@ public class DatabaseAPI {
 	{
 		ArrayList<CalendarItem> calendarItems = new ArrayList<CalendarItem>();
 		try {
-			ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM " + userID + "TABLE");
+			ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM " + userID + "Table");
 			while(rs.next())
 			{
 				CalendarItem calendarItem = new CalendarItem();
@@ -343,16 +355,18 @@ public class DatabaseAPI {
 	 * @param userID a NOT NULL user id for the row
 	 * @param password a NOT NULL password for the row
 	 * @param email a NOT NULL email for the row
+	 * @param notifications whether notifications are enabled
 	 * @return whether or not the creation was successful
 	 */
-	public boolean createAccount(String userID, String password, String email)
+	public boolean createAccount(String userID, String password, String email, Boolean notifications)
 	{
 		try {
-			PreparedStatement ps = connection.prepareStatement("INSERT INTO Account(UserID, Password, Email, UserTable) VALUES (?, ?, ?, ?)");
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO Account(UserID, Password, Email, UserTable, Notifications) VALUES (?, ?, ?, ?, ?)");
 			ps.setString(1, userID);
 			ps.setString(2, password);
 			ps.setString(3, email);
 			ps.setString(4, userID+"Table");
+			ps.setBoolean(5, notifications);
 			ps.executeUpdate();
 			String createTableString = "CREATE TABLE " + userID+"Table(FoodID varchar(255), DateEntered DateTime, DateExpired DateTime)";
 			connection.createStatement().executeUpdate(createTableString);
@@ -534,6 +548,30 @@ public class DatabaseAPI {
 		return true;	
 	}
 	
+	//Public add methods
+	
+	/**
+	 * Adds a food item to a users table
+	 * @param UserID The user to add the item to
+	 * @param food The food item to add
+	 * @return whether or not the add was successful
+	 */
+	public boolean addFoodItemToUserTable(String UserID, Food food)
+	{
+		try {
+			//FoodID varchar(255), DateEntered DateTime, DateExpired DateTime
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO " + UserID + "Table(FoodID, DateEntered, DateExpired) VALUES (?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL ? HOUR))");
+			ps.setString(1, food.getID());
+			int hours = ((int) food.getExpirationInformation().getAvgHours());
+			ps.setInt(2, hours);
+			ps.execute();
+		} catch (SQLException e) {
+			System.out.println("There was an error in the addFoodItemToUserTable method and the creation was unsuccessful. Error message: " + e.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
 	//Other public methods
 	
 	/**
@@ -604,7 +642,7 @@ public class DatabaseAPI {
 	{
       try
       {
-		connection.createStatement().executeUpdate("CREATE TABLE Account(AccountID int NOT NULL AUTO_INCREMENT, UserID varchar(255) NOT NULL, Password varchar(255) NOT NULL, UserTable varchar(255), Notificiations Boolean, Email varchar(255) NOT NULL, PRIMARY KEY(AccountID))");
+		connection.createStatement().executeUpdate("CREATE TABLE Account(AccountID int NOT NULL AUTO_INCREMENT, UserID varchar(255) NOT NULL, Password varchar(255) NOT NULL, UserTable varchar(255), Notifications Boolean, Email varchar(255) NOT NULL, PRIMARY KEY(AccountID))");
 		connection.createStatement().executeUpdate("CREATE TABLE Food(ID varchar(255) NOT NULL, Name varchar(255) NOT NULL, Brand varchar(255), FoodGroup varchar(255), PRIMARY KEY(ID))");
 		connection.createStatement().executeUpdate("CREATE TABLE Expiration(FoodID varchar(255), avgHours double, longHours int, shortHours int, numPoints int, FOREIGN KEY(FoodID) REFERENCES Food(ID))");
 		connection.createStatement().executeUpdate("CREATE TABLE Price(FoodID varchar(255), avgPrice double, biggestPrice double, smallestPrice double, numPricePoints int, FOREIGN KEY(FoodID) REFERENCES Food(ID))");

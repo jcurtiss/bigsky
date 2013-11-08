@@ -7,6 +7,11 @@ package com.Database.API;
 	public class Account
 	{
 		/**
+		 * Notifications for the row
+		 */
+		private Boolean Notifications;
+		
+		/**
 		 * ID for the row
 		 */
 		private int ID;
@@ -118,6 +123,20 @@ package com.Database.API;
 		public void setID(int ID)
 		{
 			this.ID = ID;
+		}
+
+		/**
+		 * @return the notifications
+		 */
+		public Boolean getNotifications() {
+			return Notifications;
+		}
+
+		/**
+		 * @param notifications the notifications to set
+		 */
+		public void setNotifications(Boolean notifications) {
+			Notifications = notifications;
 		}
 }
 	
