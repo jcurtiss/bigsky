@@ -1,7 +1,8 @@
-package com.ISU.shoppingsidekick;
-
+package com.Database.API;
 import java.sql.*;	
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,176 +45,59 @@ public class DatabaseAPI {
 		connectToDatabase();
 	}
 	
-	//Container Classes
-	
-	/**
-	 * Container class for the Account table
-	 * @author Sean Cavanaugh
-	 *
-	 */
-	public class Account
-	{
-		/**
-		 * ID for the row
-		 */
-		public int ID;
-		/**
-		 * UserID for the row
-		 */
-		public String UserID;
-		/**
-		 * Password for the row
-		 */
-		public String Password;
-		/**
-		 * Email for the row
-		 */
-		public String Email;
-		/**
-		 * The name of the user's table in the database
-		 */
-		public String UserTable;
-	}
-	
-	/**
-	 * Container class for the Food table
-	 * @author Sean Cavanaugh
-	 *
-	 */
-	public class Food
-	{
-		/**
-		 * ID for the food
-		 */
-		public String ID;
-		/**
-		 * Name of the food
-		 */
-		public String Name;
-		/**
-		 * Brand of the food
-		 */
-		public String Brand;
-		/**
-		 * FoodGroup the food belongs to
-		 */
-		public String FoodGroup;
-		/**
-		 * Expiration information of the food. This is a saved as an Expiration class object
-		 */
-		public Expiration ExpirationInformation;
-		/**
-		 * Price information of the food. This is a saved as an Price class object
-		 */
-		public Price PriceInformation;
-		/**
-		 * Review information of the food. This is a saved as a list of Review class objects
-		 */
-		public List<Review> ReviewInformation;
-	}
-	
-	/**
-	 * Container class for the Expiration table
-	 * @author Sean Cavanaugh
-	 *
-	 */
-	public class Expiration
-	{
-		/**
-		 * ID for the food
-		 */
-		public String FoodID;
-		/**
-		 * The largest amount of hours inputed so far
-		 */
-		public int longHours;
-		/**
-		 * The smallest amount of hours inputed so far
-		 */
-		public int shortHours;
-		/**
-		 * The average expiration time
-		 */
-		public double avgHours;
-		/**
-		 * The number of datapoints this item has
-		 */
-		public int numPoints;
-	}
-	
-	/**
-	 * Container class for the Price table
-	 * @author Sean Cavanaugh
-	 *
-	 */
-	public class Price
-	{
-		/**
-		 * ID of the food
-		 */
-		public String FoodID;
-		/**
-		 * The largest price inputed so far
-		 */
-		public double biggestPrice;
-		/**
-		 * The average price inputed so far
-		 */
-		public double avgPrice;
-		/**
-		 * The smallest price inputed so far
-		 */
-		public double smallestPrice;
-		/**
-		 * The number of datapoints this item has
-		 */
-		public int numPricePoints;
-		
-	}
-
-	/**
-	 * Container class for the Review table
-	 * @author Sean Cavanaugh
-	 *
-	 */
-	public class Review
-	{
-		/**
-		 * ID of the food
-		 */
-		public String FoodID;
-		/**
-		 * Rating (1-5) of the food
-		 */
-		public int Rating;
-		/**
-		 * Review of the food
-		 */
-		public String Review;
-	}
-	
-	/**
-	 * Container class for Calendar items
-	 * @author Sean Cavanaugh
-	 *
-	 */
-	public class CalendarItem
-	{
-		/**
-		 * Represents a food object
-		 */
-		public Food Food;
-		/**
-		 * Represents the date the food was entered
-		 */
-		public Date DateStarted;
-		/**
-		 * Represents the date the food will expire
-		 */
-		public Date DateExpired;
-	}
-	
 	//Public get methods
+	
+	/**
+	 * Gets a recipe with the given name
+	 * @param Name Name to loop for
+	 * @return The recipe that matches the name if any
+	 */
+	public Recipe getRecipeByName(String Name)
+	{
+		Recipe recipe = new Recipe();
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM Recipe WHERE Name = ?");
+			ps.setString(1, Name);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next())
+			{
+				recipe.setItemsID(new ArrayList<String>(Arrays.asList(rs.getString("ItemsID").split(","))));
+				recipe.setLink(rs.getString("Link"));
+				recipe.setName(rs.getString("Name"));
+				return recipe;
+			}
+		} catch (SQLException e) {
+			System.out.println("There was an error in the getRecipeByName method. Error message: " + e.getMessage());
+		}
+		return null;
+	}
+	
+	/**
+	 * Gets all recipes that contain the food id
+	 * @param ID The id to look for
+	 * @return All the recipes that fit the criteria
+	 */
+	public ArrayList<Recipe> getRecipesByFoodID(String ID)
+	{
+		ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM Recipe WHERE ItemsID LIKE ?");
+			ps.setString(1, "%"+ID+"%");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				Recipe recipe = new Recipe();
+				recipe.setItemsID(new ArrayList<String>(Arrays.asList(rs.getString("ItemsID").split(","))));
+				recipe.setLink(rs.getString("Link"));
+				recipe.setName(rs.getString("Name"));
+				recipes.add(recipe);
+			}
+			return recipes;
+		} catch (SQLException e) {
+			System.out.println("There was an error in the getRecipesByFoodID method. Error message: " + e.getMessage());
+		}
+		return null;
+	}
 	
 	/**
 	 * Gets an entire Account object/row that matches with the ID given. 
@@ -229,11 +113,12 @@ public class DatabaseAPI {
 			if(rs.next())
 			{
 				Account account = new Account();
-				account.Email = rs.getString("Email");
-				account.Password = rs.getString("Password");
-				account.UserID = rs.getString("UserID");
-				account.ID = rs.getInt("AccountID");
-				account.UserTable = rs.getString("UserTable");
+				account.setEmail(rs.getString("Email"));
+				account.setPassword(rs.getString("Password"));
+				account.setUserID(rs.getString("UserID"));
+				account.setID(rs.getInt("AccountID"));
+				account.setUsersTable(rs.getString("UserTable"));
+				account.setNotifications(rs.getBoolean("Notifications"));
 				return account;
 			}
 		} catch (SQLException e) {
@@ -256,11 +141,12 @@ public class DatabaseAPI {
 			if(rs.next())
 			{
 				Account account = new Account();
-				account.Email = rs.getString("Email");
-				account.Password = rs.getString("Password");
-				account.UserID = rs.getString("UserID");
-				account.ID = rs.getInt("AccountID");
-				account.UserTable = rs.getString("UserTable");
+				account.setEmail(rs.getString("Email"));
+				account.setPassword(rs.getString("Password"));
+				account.setUserID(rs.getString("UserID"));
+				account.setID(rs.getInt("AccountID"));
+				account.setUsersTable(rs.getString("UserTable"));
+				account.setNotifications(rs.getBoolean("Notifications"));
 				return account;
 			}
 		} catch (SQLException e) {
@@ -283,13 +169,13 @@ public class DatabaseAPI {
 			if(rs.next())
 			{
 				Food food = new Food();
-				food.FoodGroup = rs.getString("FoodGroup");
-				food.Name = rs.getString("Name");
-				food.Brand = rs.getString("Brand");
-				food.ID = rs.getString("ID");
-				food.ExpirationInformation = getExpirationItemByID(foodID);
-				food.PriceInformation = getPriceItemByID(foodID);
-				food.ReviewInformation = getReviewsByID(foodID);
+				food.setFoodGroup(rs.getString("FoodGroup"));
+				food.setName(rs.getString("Name"));
+				food.setBrand(rs.getString("Brand"));
+				food.setID(rs.getString("ID"));
+				food.setExpirationInformation(getExpirationItemByID(foodID));
+				food.setPriceInformation(getPriceItemByID(foodID));
+				food.setReviewInformation(getReviewsByID(foodID));
 				return food;
 			}
 		} catch (SQLException e) {
@@ -312,11 +198,11 @@ public class DatabaseAPI {
 			if(rs.next())
 			{
 				Expiration expiration = new Expiration();
-				expiration.FoodID = rs.getString("FoodID");
-				expiration.avgHours = rs.getDouble("avgHours");
-				expiration.longHours = rs.getInt("longHours");
-				expiration.numPoints = rs.getInt("numPoints");
-				expiration.shortHours = rs.getInt("shortHours");
+				expiration.setFoodID(rs.getString("FoodID"));
+				expiration.setAvgHours(rs.getDouble("avgHours"));
+				expiration.setLongHours(rs.getInt("longHours"));
+				expiration.setNumPoints(rs.getInt("numPoints"));
+				expiration.setShortHours(rs.getInt("shortHours"));
 				return expiration;
 			}
 		} catch (SQLException e) {
@@ -339,11 +225,11 @@ public class DatabaseAPI {
 			if(rs.next())
 			{
 				Price price = new Price();
-				price.FoodID = rs.getString("FoodID");
-				price.avgPrice = rs.getDouble("avgPrice");
-				price.biggestPrice = rs.getDouble("biggestPrice");
-				price.smallestPrice = rs.getDouble("smallestPrice");
-				price.numPricePoints = rs.getInt("numPricePoints");
+				price.setFoodID(rs.getString("FoodID"));
+				price.setAvgPrice(rs.getDouble("avgPrice"));
+				price.setBiggestPrice(rs.getDouble("biggestPrice"));
+				price.setSmallestPrice(rs.getDouble("smallestPrice"));
+				price.setNumPricePoints(rs.getInt("numPricePoints"));
 				return price;
 			}
 		} catch (SQLException e) {
@@ -367,9 +253,9 @@ public class DatabaseAPI {
 			while(rs.next())
 			{
 				Review review = new Review();
-				review.FoodID = rs.getString("FoodID");
-				review.Rating = rs.getInt("Rating");
-				review.Review = rs.getString("Review");
+				review.setFoodID(rs.getString("FoodID"));
+				review.setRating(rs.getInt("Rating"));
+				review.setReview(rs.getString("Review"));
 				reviews.add(review);
 			} 
 		} catch (SQLException e) {
@@ -393,13 +279,13 @@ public class DatabaseAPI {
 			while(rs.next())
 			{
 				Food food = new Food();
-				food.Name = rs.getString("Name");
-				food.Brand = rs.getString("Brand");
-				food.FoodGroup = rs.getString("FoodGroup");
-				food.ID = rs.getString("ID");
-				food.ExpirationInformation = getExpirationItemByID(food.ID);
-				food.PriceInformation = getPriceItemByID(food.ID);
-				food.ReviewInformation = getReviewsByID(food.ID);
+				food.setName(rs.getString("Name"));
+				food.setBrand(rs.getString("Brand"));
+				food.setFoodGroup(rs.getString("FoodGroup"));
+				food.setID(rs.getString("ID"));
+				food.setExpirationInformation(getExpirationItemByID(food.getID()));
+				food.setPriceInformation(getPriceItemByID(food.getID()));
+				food.setReviewInformation(getReviewsByID(food.getID()));
 				foods.add(food);
 			}
 		} catch (SQLException e) {
@@ -423,13 +309,13 @@ public class DatabaseAPI {
 			while(rs.next())
 			{
 				Food food = new Food();
-				food.Name = rs.getString("Name");
-				food.Brand = rs.getString("Brand");
-				food.FoodGroup = rs.getString("FoodGroup");
-				food.ID = rs.getString("ID");
-				food.ExpirationInformation = getExpirationItemByID(food.ID);
-				food.PriceInformation = getPriceItemByID(food.ID);
-				food.ReviewInformation = getReviewsByID(food.ID);
+				food.setName(rs.getString("Name"));
+				food.setBrand(rs.getString("Brand"));
+				food.setFoodGroup(rs.getString("FoodGroup"));
+				food.setID(rs.getString("ID"));
+				food.setExpirationInformation(getExpirationItemByID(food.getID()));
+				food.setPriceInformation(getPriceItemByID(food.getID()));
+				food.setReviewInformation(getReviewsByID(food.getID()));
 				foods.add(food);
 			}
 		} catch (SQLException e) {
@@ -447,13 +333,13 @@ public class DatabaseAPI {
 	{
 		ArrayList<CalendarItem> calendarItems = new ArrayList<CalendarItem>();
 		try {
-			ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM " + userID + "TABLE");
+			ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM " + userID + "Table");
 			while(rs.next())
 			{
 				CalendarItem calendarItem = new CalendarItem();
-				calendarItem.DateExpired = rs.getDate("DateExpired");
-				calendarItem.DateExpired = rs.getDate("DateExpired");
-				calendarItem.Food = getFoodItemByID(rs.getString("FoodID"));
+				calendarItem.setDateExpired(rs.getDate("DateExpired"));
+				calendarItem.setDateExpired(rs.getDate("DateExpired"));
+				calendarItem.setFood(getFoodItemByID(rs.getString("FoodID")));
 				calendarItems.add(calendarItem);
 			}
 		} catch (SQLException e) {
@@ -469,16 +355,18 @@ public class DatabaseAPI {
 	 * @param userID a NOT NULL user id for the row
 	 * @param password a NOT NULL password for the row
 	 * @param email a NOT NULL email for the row
+	 * @param notifications whether notifications are enabled
 	 * @return whether or not the creation was successful
 	 */
-	public boolean createAccount(String userID, String password, String email)
+	public boolean createAccount(String userID, String password, String email, Boolean notifications)
 	{
 		try {
-			PreparedStatement ps = connection.prepareStatement("INSERT INTO Account(UserID, Password, Email, UserTable) VALUES (?, ?, ?, ?)");
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO Account(UserID, Password, Email, UserTable, Notifications) VALUES (?, ?, ?, ?, ?)");
 			ps.setString(1, userID);
 			ps.setString(2, password);
 			ps.setString(3, email);
 			ps.setString(4, userID+"Table");
+			ps.setBoolean(5, notifications);
 			ps.executeUpdate();
 			String createTableString = "CREATE TABLE " + userID+"Table(FoodID varchar(255), DateEntered DateTime, DateExpired DateTime)";
 			connection.createStatement().executeUpdate(createTableString);
@@ -638,6 +526,52 @@ public class DatabaseAPI {
 		return true;
 	}
 	
+	/**
+	 * Creates a new recipe item in the database
+	 * @param Name The name of the recipe
+	 * @param ItemsID A list of the IDs of the items
+	 * @param Link Link to the recipe
+	 * @return whether the creation was sucessful
+	 */
+	public Boolean createRecipe(String Name, ArrayList<String> ItemsID, String Link)
+	{
+		try {
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO Recipe(Name, ItemsID, Link) VALUES (?, ?, ?)");
+			ps.setString(1, Name);
+			ps.setString(2, ItemsID.toString());
+			ps.setString(3, Link);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("There was an error in the createRecipe method and the creation was unsuccessful. Error message: " + e.getMessage());
+			return false;
+		}
+		return true;	
+	}
+	
+	//Public add methods
+	
+	/**
+	 * Adds a food item to a users table
+	 * @param UserID The user to add the item to
+	 * @param food The food item to add
+	 * @return whether or not the add was successful
+	 */
+	public boolean addFoodItemToUserTable(String UserID, Food food)
+	{
+		try {
+			//FoodID varchar(255), DateEntered DateTime, DateExpired DateTime
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO " + UserID + "Table(FoodID, DateEntered, DateExpired) VALUES (?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL ? HOUR))");
+			ps.setString(1, food.getID());
+			int hours = ((int) food.getExpirationInformation().getAvgHours());
+			ps.setInt(2, hours);
+			ps.execute();
+		} catch (SQLException e) {
+			System.out.println("There was an error in the addFoodItemToUserTable method and the creation was unsuccessful. Error message: " + e.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
 	//Other public methods
 	
 	/**
@@ -695,6 +629,7 @@ public class DatabaseAPI {
 	    	connection.createStatement().executeUpdate("DROP TABLE Expiration");
 	    	connection.createStatement().executeUpdate("DROP TABLE Price");
 	    	connection.createStatement().executeUpdate("DROP TABLE Reviews");
+	    	connection.createStatement().executeUpdate("DROP TABLE Recipe");
 		} catch (SQLException e) {
 	    	  System.out.println("There was an error in the dropTables method. Error message: " + e.getMessage());
 		}
@@ -707,11 +642,12 @@ public class DatabaseAPI {
 	{
       try
       {
-		connection.createStatement().executeUpdate("CREATE TABLE Account(AccountID int NOT NULL AUTO_INCREMENT, UserID varchar(255) NOT NULL, Password varchar(255) NOT NULL, UserTable varchar(255), Email varchar(255) NOT NULL, PRIMARY KEY(AccountID))");
+		connection.createStatement().executeUpdate("CREATE TABLE Account(AccountID int NOT NULL AUTO_INCREMENT, UserID varchar(255) NOT NULL, Password varchar(255) NOT NULL, UserTable varchar(255), Notifications Boolean, Email varchar(255) NOT NULL, PRIMARY KEY(AccountID))");
 		connection.createStatement().executeUpdate("CREATE TABLE Food(ID varchar(255) NOT NULL, Name varchar(255) NOT NULL, Brand varchar(255), FoodGroup varchar(255), PRIMARY KEY(ID))");
 		connection.createStatement().executeUpdate("CREATE TABLE Expiration(FoodID varchar(255), avgHours double, longHours int, shortHours int, numPoints int, FOREIGN KEY(FoodID) REFERENCES Food(ID))");
 		connection.createStatement().executeUpdate("CREATE TABLE Price(FoodID varchar(255), avgPrice double, biggestPrice double, smallestPrice double, numPricePoints int, FOREIGN KEY(FoodID) REFERENCES Food(ID))");
 		connection.createStatement().executeUpdate("CREATE TABLE Reviews(FoodID varchar(255), Rating int, Review varchar(255), CHECK(Rating > 0 AND Rating < 6))");
+		connection.createStatement().executeUpdate("CREATE TABLE Recipe(Name varchar(255), ItemsID varchar(255), Link varchar(255))");
       }
       catch (SQLException e)
       {
