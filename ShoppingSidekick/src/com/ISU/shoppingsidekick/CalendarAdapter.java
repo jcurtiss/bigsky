@@ -43,7 +43,10 @@ public class CalendarAdapter extends BaseAdapter {
     public void setItems(ArrayList<CalendarItem> items) {
     	for(int i = 0; i != items.size(); i++){
     		int day = getDayFromDate(items.get(i).getDateExpired());
-    		itemNums.add(Integer.toString(day));  
+    		itemNums.add(Integer.toString(day)); 
+    		if (itemNums.get(i).length() == 1){
+    			itemNums.set(i, "0" + itemNums.get(i));
+    		}
     	}
     	this.itemNums = itemNums;
     }

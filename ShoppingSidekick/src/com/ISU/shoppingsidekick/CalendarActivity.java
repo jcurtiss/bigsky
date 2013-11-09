@@ -142,9 +142,6 @@ public Runnable calendarUpdater = new Runnable() {
 		};
 		
 		thread.start();
-		
-		
-		
 	}
 };
 
