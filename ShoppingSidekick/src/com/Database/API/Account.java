@@ -128,15 +128,17 @@ package com.Database.API;
 		/**
 		 * @return the notifications
 		 */
-		public Boolean getNotifications() {
+		public Boolean getNotifications() 
+		{
 			return Notifications;
 		}
 
 		/**
 		 * @param notifications the notifications to set
 		 */
-		public void setNotifications(Boolean notifications) {
-			Notifications = notifications;
+		public void setNotifications(Boolean notifications) 
+		{
+			this.Notifications = notifications;
 		}
 }
 	

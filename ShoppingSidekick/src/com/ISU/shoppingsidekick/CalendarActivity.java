@@ -3,30 +3,32 @@ package com.ISU.shoppingsidekick;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
-import android.os.Bundle;
-import android.os.Handler;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.DatePicker;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.Database.API.Account;
+import com.Database.API.CalendarItem;
+import com.Database.API.DatabaseAPI;
 
 public class CalendarActivity extends Activity {
 	public Calendar month;
 	public CalendarAdapter adapter;
 	public Handler handler;
-	public ArrayList<String> items; // container to store some random calendar items
+	public ArrayList<String> items; // container to store some random calendar items 
+	public ArrayList<CalendarItem> itemsList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class CalendarActivity extends Activity {
 	    //onNewIntent(getIntent());
 	    
 	    items = new ArrayList<String>();
+	    itemsList = new ArrayList<CalendarItem>();
 	    adapter = new CalendarAdapter(this, month);
 	    
 	    GridView gridview = (GridView) findViewById(R.id.gridview);
@@ -105,7 +108,7 @@ public void refreshCalendar()
 	
 	adapter.refreshDays();
 	adapter.notifyDataSetChanged();				
-	handler.post(calendarUpdater); // generate some random calendar items				
+	handler.post(calendarUpdater); // generate some random calendar items
 	
 	title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
 }
@@ -120,19 +123,37 @@ public Runnable calendarUpdater = new Runnable() {
 	
 	@Override
 	public void run() {
-		items.clear();
-		// format random values. You can implement a dedicated class to provide real values
-		for(int i=0;i<31;i++) {
-			Random r = new Random();
-			
-			if(r.nextInt(10)>6)
+		itemsList.clear();
+		//format random values. You can implement a dedicated class to provide real values
+//		for(int i=0;i<31;i++) {
+//			Random r = new Random();
+//			
+//			if(r.nextInt(10)>6)
+//			{
+//				items.add(Integer.toString(i));
+//			}
+//		}
+		Thread thread = new Thread()
+		{
+			@Override
+	        public void run()
 			{
-				items.add(Integer.toString(i));
+				synchronized(this)
+				{
+					DatabaseAPI api = new DatabaseAPI();
+					Account account = api.getAccountInfoByUserID("Daotoo");
+					ArrayList<CalendarItem> itemsList = (ArrayList<CalendarItem>) api.getUsersItems(account.getUserID());
+					adapter.setItems(itemsList);
+					adapter.notifyDataSetChanged();
+				};
+				
 			}
-		}
-
-		adapter.setItems(items);
-		adapter.notifyDataSetChanged();
+		};
+		
+		thread.start();
+		
+		
+		
 	}
 };
 

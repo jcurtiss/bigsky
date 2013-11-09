@@ -2,6 +2,9 @@ package com.ISU.shoppingsidekick;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
+import com.Database.API.CalendarItem;
 
 
 import android.content.Context;
@@ -21,24 +24,24 @@ public class CalendarAdapter extends BaseAdapter {
 
     private java.util.Calendar month;
     private Calendar selectedDate;
-    private ArrayList<String> items;
+    private ArrayList<Integer> itemsDates;
+    private ArrayList<CalendarItem> items;
     
     public CalendarAdapter(Context c, Calendar monthCalendar) {
     	month = monthCalendar;
     	selectedDate = (Calendar)monthCalendar.clone();
     	mContext = c;
         month.set(Calendar.DAY_OF_MONTH, 1);
-        this.items = new ArrayList<String>();
+        this.items = new ArrayList<CalendarItem>();
+        this.itemsDates = new ArrayList<Integer>();
         refreshDays();
     }
     
-    public void setItems(ArrayList<String> items) {
+    public void setItems(ArrayList<CalendarItem> items) {
     	for(int i = 0;i != items.size();i++){
-    		if(items.get(i).length()==1) {
-    		items.set(i, "0" + items.get(i));
-    		}
+    		itemsDates.set(i, items.get(i).getDateExpired().getDay());   		
     	}
-    	this.items = items;
+    	this.itemsDates = itemsDates;
     }
     
 
