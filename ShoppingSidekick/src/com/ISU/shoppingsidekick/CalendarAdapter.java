@@ -3,6 +3,7 @@ package com.ISU.shoppingsidekick;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.Database.API.CalendarItem;
 
@@ -24,24 +25,27 @@ public class CalendarAdapter extends BaseAdapter {
 
     private java.util.Calendar month;
     private Calendar selectedDate;
-    private ArrayList<Integer> itemsDates;
-    private ArrayList<CalendarItem> items;
+    private static Calendar myCal;
+    private ArrayList<String> itemNums;
+    //private ArrayList<CalendarItem> items;
     
     public CalendarAdapter(Context c, Calendar monthCalendar) {
     	month = monthCalendar;
     	selectedDate = (Calendar)monthCalendar.clone();
     	mContext = c;
         month.set(Calendar.DAY_OF_MONTH, 1);
-        this.items = new ArrayList<CalendarItem>();
-        this.itemsDates = new ArrayList<Integer>();
+        myCal = Calendar.getInstance();
+        //this.items = new ArrayList<CalendarItem>();
+        this.itemNums = new ArrayList<String>();
         refreshDays();
     }
     
     public void setItems(ArrayList<CalendarItem> items) {
-    	for(int i = 0;i != items.size();i++){
-    		itemsDates.set(i, items.get(i).getDateExpired().getDay());   		
+    	for(int i = 0; i != items.size(); i++){
+    		int day = getDayFromDate(items.get(i).getDateExpired());
+    		itemNums.add(Integer.toString(day));  
     	}
-    	this.itemsDates = itemsDates;
+    	this.itemNums = itemNums;
     }
     
 
@@ -97,7 +101,7 @@ public class CalendarAdapter extends BaseAdapter {
        
         // show icon if date is not empty and it exists in the items array
         ImageView iw = (ImageView)v.findViewById(R.id.date_icon);
-        if(date.length()>0 && items!=null && items.contains(date)) {        	
+        if(date.length()>0 && itemNums!=null && itemNums.contains(date)) {        	
         	iw.setVisibility(View.VISIBLE);
         }
         else {
@@ -106,10 +110,17 @@ public class CalendarAdapter extends BaseAdapter {
         return v;
     }
     
+    public int getDayFromDate(Date date){
+    		myCal.setTime(date);
+    		int day = myCal.get(Calendar.DAY_OF_MONTH);
+   
+		return day;
+    	
+}
     public void refreshDays()
     {
     	// clear items
-    	items.clear();
+    	itemNums.clear();
     	
     	int lastDay = month.getActualMaximum(Calendar.DAY_OF_MONTH);
         int firstDay = (int)month.get(Calendar.DAY_OF_WEEK);
