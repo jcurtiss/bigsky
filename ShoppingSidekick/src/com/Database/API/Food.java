@@ -43,6 +43,21 @@ import java.util.List;
 		 */
 		private List<Review> ReviewInformation;
 
+		@Override
+		public boolean equals(Object obj){
+			boolean result = false;
+			if(obj instanceof Food){
+				Food f = (Food) obj;
+				if(f.getID().equals(this.getID()))
+					result = true;
+			}
+			return result;
+		}
+
+		
+		public int hashCode(){
+			return getID().hashCode();
+		}
 		/**
 		 * @return the iD
 		 */
