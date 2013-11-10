@@ -1,6 +1,10 @@
 package com.ISU.shoppingsidekick;
 
-import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,7 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.ISU.shoppingsidekick.DatabaseAPI.Food;
+import com.Database.API.DatabaseAPI;
+import com.Database.API.Food;
 
 public class FoodResultsActivity extends Activity {
 
@@ -19,34 +24,72 @@ public class FoodResultsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_food_results);
 		
+		//String scanValue = null;
 		
-		String scanValue = getIntent().getExtras().getString("scanValue");
-		Food scannedFood = new DatabaseAPI().getFoodItemByID(scanValue);
-		String name = scannedFood.Name;
-		String brand = scannedFood.Brand;
-		String id = scannedFood.ID;
-		DatabaseAPI.Expiration expirationInfo = scannedFood.ExpirationInformation;
-		DatabaseAPI.Price priceInfo = scannedFood.PriceInformation;
-		List<DatabaseAPI.Review> reviewInfo = scannedFood.ReviewInformation;
-		
+		Intent scannerValue = getIntent();
+		Bundle scanVal = scannerValue.getExtras();
 		TextView productName = (TextView) findViewById(R.id.productName);
-		productName.setText(name);
-		
 		TextView productBrand = (TextView) findViewById(R.id.productBrand);
-		productBrand.setText(brand);
-		
 		TextView productID = (TextView) findViewById(R.id.productID);
-		productBrand.setText(id);
-		
 		TextView expInformation = (TextView) findViewById(R.id.expInformation);
-		productBrand.setText(expirationInfo.avgHours);
-		
 		TextView priceInformation = (TextView) findViewById(R.id.priceInformation);
-		productBrand.setText(priceInfo);
-		
 		TextView reviewInformation = (TextView) findViewById(R.id.reviewInformation);
-		productBrand.setText(reviewInfo);
+		String name = "";
+		String brand= "";
+		String id ="";
+		Food scannedFood = new Food();
+		if(scanVal != null){		
+			//final String scanValue = scanVal.getString("scanID");
+			ExecutorService pool = Executors.newFixedThreadPool(3);
+			final String scanValue = "085239311189";
+			Callable task = new Callable(){
+				@Override
+				public Object call() throws Exception{
+					DatabaseAPI database = new DatabaseAPI();
+					return database.getFoodItemByID(scanValue);
+				}
+			};
+			Future<Food> future = pool.submit(task);
+			try {
+				scannedFood = future.get();
+				
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+//			Expiration expirationInfo = scannedFood.getExpirationInformation();
+//			Price priceInfo = scannedFood.getPriceInformation();
+//			List<Review> reviewInfo = scannedFood.getReviewInformation();
+			
+			name = scannedFood.getName();
+			brand = scannedFood.getBrand();
+			id = scannedFood.getID();
+			productName.setText(name);
+			
+			productBrand.setText(brand);
+			
+			productID.setText(id);
+			
+//			expInformation.setText(expirationInfo.toString());
+//			
+//			priceInformation.setText(priceInfo.toString());
+//			
+//			reviewInformation.setText(reviewInfo.toString());
+		}
 		
+		else{
+			productName.setText("Item not found");
+			productBrand.setVisibility(View.INVISIBLE);
+			productID.setVisibility(View.INVISIBLE);
+			expInformation.setVisibility(View.INVISIBLE);
+			priceInformation.setVisibility(View.INVISIBLE);
+			reviewInformation.setVisibility(View.INVISIBLE);
+		}	
+			
 		//confirmation button     
         Button goToScanBtn = (Button) findViewById(R.id.resultsToConfirmation);
         goToScanBtn.setOnClickListener(new View.OnClickListener() {

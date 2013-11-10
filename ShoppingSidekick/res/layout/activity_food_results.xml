@@ -23,4 +23,57 @@
         android:layout_marginTop="42dp"
         android:text="Confirmation" />
 
+    <TextView
+        android:id="@+id/productName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/resultsToConfirmation"
+        android:layout_below="@+id/resultsToConfirmation"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="51dp"
+        android:text="productName" />
+
+    <TextView
+        android:id="@+id/productBrand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/productName"
+        android:layout_below="@+id/productName"
+        android:layout_marginTop="46dp"
+        android:text="productBrand" />
+
+    <TextView
+        android:id="@+id/productID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/productBrand"
+        android:layout_below="@+id/productBrand"
+        android:layout_marginTop="26dp"
+        android:text="productID" />
+
+    <TextView
+        android:id="@+id/expInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/productID"
+        android:layout_below="@+id/productID"
+        android:layout_marginTop="22dp"
+        android:text="expInformation" />
+
+    <TextView
+        android:id="@+id/reviewInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/priceInformation"
+        android:layout_below="@+id/priceInformation"
+        android:text="reviewInformation" />
+
+    <TextView
+        android:id="@+id/priceInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/expInformation"
+        android:layout_below="@+id/expInformation"
+        android:text="priceInformation" />
+
 </RelativeLayout>

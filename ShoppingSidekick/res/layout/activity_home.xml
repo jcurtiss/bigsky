@@ -63,4 +63,13 @@
         android:layout_alignRight="@+id/goToRecipes"
         android:text="Food Finder" />
 
+    <Button
+        android:id="@+id/goToFoodResults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/goToRecentActivity"
+        android:layout_below="@+id/goToFoodFinder"
+        android:layout_marginRight="18dp"
+        android:text="Food Results" />
+
 </RelativeLayout>

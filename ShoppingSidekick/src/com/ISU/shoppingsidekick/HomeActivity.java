@@ -35,6 +35,16 @@ public class HomeActivity extends Activity {
 			}
 		});
         
+      //Food Results button
+        Button goToFoodResultsBtn = (Button) findViewById(R.id.goToFoodResults);
+        goToFoodResultsBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(HomeActivity.this, FoodResultsActivity.class);
+				startActivity(i);
+			}
+		});
+        
         //Settings
         Button goToSettingsBtn = (Button) findViewById(R.id.goToSettings);
         goToSettingsBtn.setOnClickListener(new View.OnClickListener() {

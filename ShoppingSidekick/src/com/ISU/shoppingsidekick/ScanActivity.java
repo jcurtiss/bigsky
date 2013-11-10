@@ -32,7 +32,7 @@ public class ScanActivity extends Activity implements OnClickListener {
 		formatTxt = (TextView)findViewById(R.id.scan_format);
 		contentTxt = (TextView)findViewById(R.id.scan_content);
 		scanBtn.setOnClickListener(this);
-
+		
 	}
 
 	@Override
@@ -53,9 +53,11 @@ public class ScanActivity extends Activity implements OnClickListener {
 		IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 			if (scanningResult != null) {
 					String scanContent = scanningResult.getContents();
-					String scanFormat = scanningResult.getFormatName();
-					formatTxt.setText("FORMAT: " + scanFormat);
-					contentTxt.setText("CONTENT: " + scanContent);
+					//String scanFormat = scanningResult.getFormatName();
+										
+					Intent i = new Intent(ScanActivity.this, FoodResultsActivity.class);
+					i.putExtra("scanID",scanContent);
+					startActivity(i);
 					}
 				else{
 				    Toast toast = Toast.makeText(getApplicationContext(),
