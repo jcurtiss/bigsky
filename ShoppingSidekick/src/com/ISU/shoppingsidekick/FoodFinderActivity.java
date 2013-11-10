@@ -8,9 +8,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +32,7 @@ import com.Database.API.Food;
 public class FoodFinderActivity extends Activity {
 
 	EditText searchField;
-	ListView resultsList;
+	ListView resultsListView;
 	Button searchBtn;
 	ArrayList<Food> searchResults;
 	ArrayAdapter<String> adapter;
@@ -42,9 +45,20 @@ public class FoodFinderActivity extends Activity {
 		setContentView(R.layout.activity_food_finder);
 		listItems = new ArrayList<String>();
 		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
-		resultsList = (ListView) findViewById(R.id.searchResultsList);
-		resultsList.setAdapter(adapter);
-		
+		resultsListView = (ListView) findViewById(R.id.searchResultsList);
+		resultsListView.setAdapter(adapter);
+		resultsListView.setOnItemClickListener(new OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				String str = (String) resultsListView.getItemAtPosition(position);
+				if(!str.equals("No search results found")){
+					Food food = searchResults.get(position);
+					Intent i = new Intent(FoodFinderActivity.this, FoodResultsActivity.class);
+					i.putExtra("scanID", food.getID());
+					startActivity(i);
+				}
+			}
+		});
 		//Search button and search field
         searchBtn = (Button) findViewById(R.id.searchButton);
         searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +99,7 @@ public class FoodFinderActivity extends Activity {
 					e.printStackTrace();
 				}
 		        if(searchResults.size() > 0)
-		        	populateResultsList(searchResults);
+		        	populateResultsList();
 		        else{
 		        	listItems.clear();
 		        	listItems.add("No search results found");	
@@ -116,10 +130,10 @@ public class FoodFinderActivity extends Activity {
 		return st;
 	}
 
-	public void populateResultsList(ArrayList<Food> results){
+	public void populateResultsList(){
 		listItems.clear();
-		for(int i = 0; i < results.size(); i++){
-			listItems.add(results.get(i).getName());
+		for(int i = 0; i < searchResults.size(); i++){
+			listItems.add(searchResults.get(i).getName());
 		}
 	}
 }
