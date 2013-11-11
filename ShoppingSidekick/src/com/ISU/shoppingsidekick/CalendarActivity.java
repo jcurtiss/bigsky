@@ -27,8 +27,6 @@ public class CalendarActivity extends Activity {
 	public Calendar month;
 	public CalendarAdapter adapter;
 	public Handler handler;
-	public ArrayList<String> items; // container to store some random calendar items 
-	public ArrayList<CalendarItem> itemsList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +34,6 @@ public class CalendarActivity extends Activity {
 		super.onCreate(savedInstanceState);
 	    setContentView(R.layout.calendar);
 	    month = Calendar.getInstance();
-	    items = new ArrayList<String>();
-	    itemsList = new ArrayList<CalendarItem>();
 	    adapter = new CalendarAdapter(this, month);
 	    
 	    GridView gridview = (GridView) findViewById(R.id.gridview);
@@ -116,12 +112,12 @@ public void onNewIntent(Intent intent) {
 	String[] dateArr = date.split("-"); // date format is yyyy-mm-dd
 	month.set(Integer.parseInt(dateArr[0]), Integer.parseInt(dateArr[1]), Integer.parseInt(dateArr[2]));
 }
-
+Boolean flag = true;
+ArrayList<CalendarItem> itemsList;
 public Runnable calendarUpdater = new Runnable() {
 	
 	@Override
 	public void run() {
-		itemsList.clear();
 		Thread thread = new Thread()
 		{
 			@Override
@@ -132,15 +128,17 @@ public Runnable calendarUpdater = new Runnable() {
 					
 					DatabaseAPI api = new DatabaseAPI();
 					Account account = api.getAccountInfoByUserID("Daotoo");
-					ArrayList<CalendarItem> itemsList = (ArrayList<CalendarItem>) api.getUsersItems(account.getUserID());
-					adapter.setItems(itemsList);
-					adapter.notifyDataSetChanged();
+					itemsList = (ArrayList<CalendarItem>) api.getUsersItems(account.getUserID());
+					flag = false;
 				};
 				
 			}
 		};
 		
 		thread.start();
+		while(flag);
+		adapter.setItems(itemsList);
+		adapter.notifyDataSetChanged();
 	}
 };
 
