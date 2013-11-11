@@ -18,6 +18,6 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="scan">scan</string>
     <string name="open">Open</string>
-    
+    <string name="title_activity_calendar_info">CalendarInfo</string>
 
 </resources>

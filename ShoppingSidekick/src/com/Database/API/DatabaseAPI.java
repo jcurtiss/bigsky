@@ -457,10 +457,12 @@ public class DatabaseAPI {
 				ps.setString(5, foodID);
 				ps.executeUpdate();
 			}
+
 			else
 			{
 				return false;
 			}
+
 		} catch (SQLException e) {
 			System.out.println("There was an error in the createPricePoint method and the creation was unsuccessful. Error message: " + e.getMessage());
 			return false;
@@ -505,6 +507,7 @@ public class DatabaseAPI {
 				ps.setString(5, foodID);
 				ps.executeUpdate();
 			}
+
 			else
 			{
 				return false;

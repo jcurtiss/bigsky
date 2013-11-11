@@ -3,29 +3,30 @@ package com.ISU.shoppingsidekick;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
-import android.os.Bundle;
-import android.os.Handler;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.DatePicker;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.Database.API.Account;
+import com.Database.API.CalendarItem;
+import com.Database.API.DatabaseAPI;
 
 public class CalendarActivity extends Activity {
 	public Calendar month;
 	public CalendarAdapter adapter;
 	public Handler handler;
-	public ArrayList<String> items; // container to store some random calendar items
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +34,6 @@ public class CalendarActivity extends Activity {
 		super.onCreate(savedInstanceState);
 	    setContentView(R.layout.calendar);
 	    month = Calendar.getInstance();
-	    //onNewIntent(getIntent());
-	    
-	    items = new ArrayList<String>();
 	    adapter = new CalendarAdapter(this, month);
 	    
 	    GridView gridview = (GridView) findViewById(R.id.gridview);
@@ -90,10 +88,11 @@ public class CalendarActivity extends Activity {
 	        	// return chosen date as string format 
 	        	intent.putExtra("date", android.text.format.DateFormat.format("yyyy-MM", month)+"-"+day);
 	        	setResult(RESULT_OK, intent);
+	        	Intent i = new Intent(CalendarActivity.this, CalendarInfo.class);
+				startActivity(i);
+			}
 	        	finish();
 	        }
-	        
-	    }
 	});
 }
 
@@ -103,7 +102,7 @@ public void refreshCalendar()
 	
 	adapter.refreshDays();
 	adapter.notifyDataSetChanged();				
-	handler.post(calendarUpdater); // generate some random calendar items				
+	handler.post(calendarUpdater); // generate some random calendar items
 	
 	title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
 }
@@ -113,26 +112,48 @@ public void onNewIntent(Intent intent) {
 	String[] dateArr = date.split("-"); // date format is yyyy-mm-dd
 	month.set(Integer.parseInt(dateArr[0]), Integer.parseInt(dateArr[1]), Integer.parseInt(dateArr[2]));
 }
-
+Boolean flag = true;
+ArrayList<CalendarItem> itemsList;
 public Runnable calendarUpdater = new Runnable() {
 	
 	@Override
 	public void run() {
-		items.clear();
-		// format random values. You can implement a dedicated class to provide real values
-		for(int i=0;i<31;i++) {
-			Random r = new Random();
-			
-			if(r.nextInt(10)>6)
+		Thread thread = new Thread()
+		{
+			@Override
+	        public void run()
 			{
-				items.add(Integer.toString(i));
+				synchronized(this)
+				{
+					
+					DatabaseAPI api = new DatabaseAPI();
+					Account account = api.getAccountInfoByUserID("Daotoo");
+					itemsList = (ArrayList<CalendarItem>) api.getUsersItems(account.getUserID());
+					flag = false;
+				};
+				
 			}
-		}
-
-		adapter.setItems(items);
+		};
+		
+		thread.start();
+		while(flag);
+		adapter.setItems(itemsList);
 		adapter.notifyDataSetChanged();
 	}
 };
+
+//Override the onKeyDown method  
+@Override  
+public boolean onKeyDown(int keyCode, KeyEvent event)  
+{  
+    //replaces the default 'Back' button action  
+    if(keyCode==KeyEvent.KEYCODE_BACK)  
+    {  
+      
+        this.startActivity(new Intent(CalendarActivity.this, HomeActivity.class));  
+    }  
+    return true;  
+}  
 
 
 	@Override
