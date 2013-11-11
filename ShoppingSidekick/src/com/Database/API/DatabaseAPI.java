@@ -1,8 +1,11 @@
 package com.Database.API;
-import java.sql.*;	
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -454,12 +457,18 @@ public class DatabaseAPI {
 				ps.setString(5, foodID);
 				ps.executeUpdate();
 			}
+<<<<<<< HEAD
 			
+=======
+>>>>>>> 92dc026ffdc071c9cebe7b6e9d0b4d3e8402ddfb
 			else
 			{
 				return false;
 			}
+<<<<<<< HEAD
 			
+=======
+>>>>>>> 92dc026ffdc071c9cebe7b6e9d0b4d3e8402ddfb
 		} catch (SQLException e) {
 			System.out.println("There was an error in the createPricePoint method and the creation was unsuccessful. Error message: " + e.getMessage());
 			return false;
@@ -504,7 +513,10 @@ public class DatabaseAPI {
 				ps.setString(5, foodID);
 				ps.executeUpdate();
 			}
+<<<<<<< HEAD
 			
+=======
+>>>>>>> 92dc026ffdc071c9cebe7b6e9d0b4d3e8402ddfb
 			else
 			{
 				return false;
@@ -531,10 +543,11 @@ public class DatabaseAPI {
 			throw new IllegalArgumentException();
 		}
 		try {
-			PreparedStatement ps = connection.prepareStatement("INSERT INTO Rating(FoodID, Rating, Review) VALUES (?, ?, ?)");
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO Reviews(FoodID, Rating, Review) VALUES (?, ?, ?)");
 			ps.setString(1, FoodID);
 			ps.setInt(2, rating);
 			ps.setString(3, review);
+			ps.execute();
 		} catch (SQLException e) {
 			System.out.println("There was an error in the createReview method and the creation was unsuccessful. Error message: " + e.getMessage());
 			return false;
