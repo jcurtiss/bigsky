@@ -1,5 +1,6 @@
 package com.ISU.shoppingsidekick;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -15,7 +16,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.Database.API.DatabaseAPI;
+import com.Database.API.Expiration;
 import com.Database.API.Food;
+import com.Database.API.Price;
+import com.Database.API.Review;
 
 public class FoodResultsActivity extends Activity {
 
@@ -39,9 +43,9 @@ public class FoodResultsActivity extends Activity {
 		String id ="";
 		Food scannedFood = new Food();
 		if(scanVal != null){		
-			//final String scanValue = scanVal.getString("scanID");
+			final String scanValue = scanVal.getString("scanID");
 			ExecutorService pool = Executors.newFixedThreadPool(3);
-			final String scanValue = "085239311189";
+//			final String scanValue = "085239311189";
 			Callable task = new Callable(){
 				@Override
 				public Object call() throws Exception{
@@ -61,9 +65,9 @@ public class FoodResultsActivity extends Activity {
 				e.printStackTrace();
 			}
 			
-//			Expiration expirationInfo = scannedFood.getExpirationInformation();
-//			Price priceInfo = scannedFood.getPriceInformation();
-//			List<Review> reviewInfo = scannedFood.getReviewInformation();
+			Expiration expirationInfo = scannedFood.getExpirationInformation();
+			Price priceInfo = scannedFood.getPriceInformation();
+			List<Review> reviewInfo = scannedFood.getReviewInformation();
 			
 			name = scannedFood.getName();
 			brand = scannedFood.getBrand();
@@ -74,11 +78,11 @@ public class FoodResultsActivity extends Activity {
 			
 			productID.setText(id);
 			
-//			expInformation.setText(expirationInfo.toString());
-//			
-//			priceInformation.setText(priceInfo.toString());
-//			
-//			reviewInformation.setText(reviewInfo.toString());
+			expInformation.setText("Average Expiration" + " " + expirationInfo.getAvgHours());
+			
+			priceInformation.setText("Average Price" + " " + priceInfo.getAvgPrice());
+			
+			reviewInformation.setText("Review" + " " + reviewInfo.get(0).getReview());
 		}
 		
 		else{
@@ -91,14 +95,14 @@ public class FoodResultsActivity extends Activity {
 		}	
 			
 		//confirmation button     
-        Button goToScanBtn = (Button) findViewById(R.id.resultsToConfirmation);
-        goToScanBtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(FoodResultsActivity.this, FoodConfirmationActivity.class);
-				startActivity(i);
-			}
-		});
+//        Button goToScanBtn = (Button) findViewById(R.id.resultsToConfirmation);
+//        goToScanBtn.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Intent i = new Intent(FoodResultsActivity.this, FoodConfirmationActivity.class);
+//				startActivity(i);
+//			}
+//		});
         
         //home button
         Button goToFoodFinderBtn = (Button) findViewById(R.id.resultsToHome);

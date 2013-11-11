@@ -14,23 +14,40 @@
         android:layout_height="wrap_content"
         android:text="Home" />
 
-    <Button
-        android:id="@+id/resultsToConfirmation"
+    <TextView
+        android:id="@+id/reviewInformation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/resultsToHome"
-        android:layout_below="@+id/resultsToHome"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="49dp"
+        android:text="reviewInformation" />
+
+    <TextView
+        android:id="@+id/priceInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/reviewInformation"
+        android:layout_alignLeft="@+id/reviewInformation"
+        android:layout_marginBottom="27dp"
+        android:text="priceInformation" />
+
+    <TextView
+        android:id="@+id/productID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/resultsToHome"
+        android:layout_below="@+id/resultsToConfirmation"
         android:layout_marginTop="42dp"
-        android:text="Confirmation" />
+        android:text="productID" />
 
     <TextView
         android:id="@+id/productName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/resultsToConfirmation"
-        android:layout_below="@+id/resultsToConfirmation"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="51dp"
+        android:layout_alignLeft="@+id/productID"
+        android:layout_below="@+id/productID"
+        android:layout_marginTop="38dp"
         android:text="productName" />
 
     <TextView
@@ -39,41 +56,17 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/productName"
         android:layout_below="@+id/productName"
-        android:layout_marginTop="46dp"
+        android:layout_marginTop="43dp"
         android:text="productBrand" />
 
-    <TextView
-        android:id="@+id/productID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/productBrand"
-        android:layout_below="@+id/productBrand"
-        android:layout_marginTop="26dp"
-        android:text="productID" />
 
     <TextView
         android:id="@+id/expInformation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/productID"
-        android:layout_below="@+id/productID"
-        android:layout_marginTop="22dp"
+        android:layout_alignRight="@+id/resultsToConfirmation"
+        android:layout_below="@+id/productBrand"
+        android:layout_marginTop="16dp"
         android:text="expInformation" />
-
-    <TextView
-        android:id="@+id/reviewInformation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/priceInformation"
-        android:layout_below="@+id/priceInformation"
-        android:text="reviewInformation" />
-
-    <TextView
-        android:id="@+id/priceInformation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/expInformation"
-        android:layout_below="@+id/expInformation"
-        android:text="priceInformation" />
 
 </RelativeLayout>
