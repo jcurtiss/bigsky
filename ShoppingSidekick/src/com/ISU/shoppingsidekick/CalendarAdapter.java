@@ -3,7 +3,7 @@ package com.ISU.shoppingsidekick;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+
 
 import com.Database.API.CalendarItem;
 
@@ -27,7 +27,6 @@ public class CalendarAdapter extends BaseAdapter {
     private Calendar selectedDate;
     private static Calendar myCal;
     private ArrayList<String> itemNums;
-    //private ArrayList<CalendarItem> items;
     
     public CalendarAdapter(Context c, Calendar monthCalendar) {
     	month = monthCalendar;
@@ -35,7 +34,6 @@ public class CalendarAdapter extends BaseAdapter {
     	mContext = c;
         month.set(Calendar.DAY_OF_MONTH, 1);
         myCal = Calendar.getInstance();
-        //this.items = new ArrayList<CalendarItem>();
         this.itemNums = new ArrayList<String>();
         refreshDays();
     }
@@ -48,10 +46,8 @@ public class CalendarAdapter extends BaseAdapter {
     			itemNums.set(i, "0" + itemNums.get(i));
     		}
     	}
-    	this.itemNums = itemNums;
     }
     
-
     public int getCount() {
         return days.length;
     }
