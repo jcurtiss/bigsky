@@ -37,7 +37,6 @@ public class FoodFinderActivity extends Activity {
 	ArrayList<Food> searchResults;
 	ArrayAdapter<String> adapter;
 	ArrayList<String> listItems;
-	String st;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,6 @@ public class FoodFinderActivity extends Activity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				st = getSearchFieldText();
 				ExecutorService pool = Executors.newFixedThreadPool(3);
 				final String st = getSearchFieldText();
 		        Callable task = new Callable(){
@@ -74,11 +72,15 @@ public class FoodFinderActivity extends Activity {
 					}
 					
 					private ArrayList<Food> getSearchResults(String searchText){
-						DatabaseAPI d = new DatabaseAPI();
-						ArrayList<Food> setFromName = d.getFoodByFuzzyNameMatch(searchText);
-						ArrayList<Food> setFromGroup = d.getFoodByFuzzyFoodGroupMatch(searchText);
-						
-						return removeDuplicates(setFromName, setFromGroup);
+						if(!searchText.equals("")){
+							DatabaseAPI d = new DatabaseAPI();
+							ArrayList<Food> setFromName = d.getFoodByFuzzyNameMatch(searchText);
+							ArrayList<Food> setFromGroup = d.getFoodByFuzzyFoodGroupMatch(searchText);
+							
+							return removeDuplicates(setFromName, setFromGroup);
+						} else {
+							return new ArrayList<Food>();
+						}
 					}
 					
 					private ArrayList<Food> removeDuplicates(ArrayList<Food> arr1, ArrayList<Food> arr2){
@@ -121,7 +123,7 @@ public class FoodFinderActivity extends Activity {
 	 * @return String of text from searchField
 	 */
 	private String getSearchFieldText(){
-		st = "";
+		String st = "";
 		searchField = (EditText)findViewById(R.id.searchField);
 		if(searchField.length() > 0)
 			return searchField.getText().toString();
