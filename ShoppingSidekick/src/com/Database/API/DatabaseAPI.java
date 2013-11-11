@@ -435,22 +435,30 @@ public class DatabaseAPI {
 			ps.setString(1, foodID);
 			ResultSet rs = ps.executeQuery();
 			//Get price information out of the record
-			double avgPrice = rs.getDouble("avgPrice");
-			double biggestPrice = rs.getDouble("biggestPrice");
-			double smallestPrice = rs.getDouble("avgPrice");
-			int numPricePoints = rs.getInt("numPricePoints");
-			//Find new average
-			avgPrice = ((avgPrice*numPricePoints)+price)/++numPricePoints;
-			biggestPrice = biggestPrice > price ? biggestPrice : price;
-			smallestPrice = smallestPrice < price ? smallestPrice : price;
-			//Put new information back into the database
-			ps = connection.prepareStatement("UPDATE Price SET avgPrice=?, biggestPrice=?, smallestPrice=?, numPricePoints=?  WHERE FoodID = ?");
-			ps.setDouble(1, avgPrice);
-			ps.setDouble(2, biggestPrice);
-			ps.setDouble(3, smallestPrice);
-			ps.setInt(4, numPricePoints);
-			ps.setString(5, foodID);
-			ps.executeUpdate();
+			if(rs.next())
+			{
+				double avgPrice = rs.getDouble("avgPrice");
+				double biggestPrice = rs.getDouble("biggestPrice");
+				double smallestPrice = rs.getDouble("avgPrice");
+				int numPricePoints = rs.getInt("numPricePoints");
+				//Find new average
+				avgPrice = ((avgPrice*numPricePoints)+price)/++numPricePoints;
+				biggestPrice = biggestPrice > price ? biggestPrice : price;
+				smallestPrice = smallestPrice < price ? smallestPrice : price;
+				//Put new information back into the database
+				ps = connection.prepareStatement("UPDATE Price SET avgPrice=?, biggestPrice=?, smallestPrice=?, numPricePoints=?  WHERE FoodID = ?");
+				ps.setDouble(1, avgPrice);
+				ps.setDouble(2, biggestPrice);
+				ps.setDouble(3, smallestPrice);
+				ps.setInt(4, numPricePoints);
+				ps.setString(5, foodID);
+				ps.executeUpdate();
+			}
+			
+			else
+			{
+				return false;
+			}
 			
 		} catch (SQLException e) {
 			System.out.println("There was an error in the createPricePoint method and the creation was unsuccessful. Error message: " + e.getMessage());
@@ -477,22 +485,30 @@ public class DatabaseAPI {
 			ps.setString(1, foodID);
 			ResultSet rs = ps.executeQuery();
 			//Get expiration information out of the record
-			double avgHours = rs.getDouble("avgHours");
-			int longHours = rs.getInt("longHours");
-			int shortHours = rs.getInt("shortHours");
-			int numPoints = rs.getInt("numPoints");
-			//Find new average
-			avgHours = ((avgHours*numPoints)+hours)/++numPoints;
-			longHours = longHours > hours ? longHours : hours;
-			shortHours = shortHours < hours ? shortHours : hours;
-			//Put new information back into the database
-			ps = connection.prepareStatement("UPDATE Expiration SET avgHours=?, longHours=?, shortHours=?, numPoints=?  WHERE FoodID = ?");
-			ps.setDouble(1, avgHours);
-			ps.setDouble(2, longHours);
-			ps.setDouble(3, shortHours);
-			ps.setInt(4, numPoints);
-			ps.setString(5, foodID);
-			ps.executeUpdate();
+			if(rs.next())
+			{
+				double avgHours = rs.getDouble("avgHours");
+				int longHours = rs.getInt("longHours");
+				int shortHours = rs.getInt("shortHours");
+				int numPoints = rs.getInt("numPoints");
+				//Find new average
+				avgHours = ((avgHours*numPoints)+hours)/++numPoints;
+				longHours = longHours > hours ? longHours : hours;
+				shortHours = shortHours < hours ? shortHours : hours;
+				//Put new information back into the database
+				ps = connection.prepareStatement("UPDATE Expiration SET avgHours=?, longHours=?, shortHours=?, numPoints=?  WHERE FoodID = ?");
+				ps.setDouble(1, avgHours);
+				ps.setDouble(2, longHours);
+				ps.setDouble(3, shortHours);
+				ps.setInt(4, numPoints);
+				ps.setString(5, foodID);
+				ps.executeUpdate();
+			}
+			
+			else
+			{
+				return false;
+			}
 			
 		} catch (SQLException e) {
 			System.out.println("There was an error in the createExpirationPoint method and the creation was unsuccessful. Error message: " + e.getMessage());
