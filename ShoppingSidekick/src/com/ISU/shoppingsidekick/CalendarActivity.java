@@ -119,28 +119,29 @@ public void onNewIntent(Intent intent) {
 
 public Runnable calendarUpdater = new Runnable() {
 	
-//	@Override
-//	public void run() {
-//		itemsList.clear();
-//		Thread thread = new Thread()
-//		{
-//				@Override
-//		        public void run()
-//				{
-//					synchronized(this)
-//					{
-//						DatabaseAPI api = new DatabaseAPI();
-//						Account account = api.getAccountInfoByUserID("Daotoo");
-//						ArrayList<CalendarItem> itemsList = (ArrayList<CalendarItem>) api.getUsersItems(account.getUserID());
-//						adapter.setItems(itemsList);
-//						adapter.notifyDataSetChanged();
-//					};
-//					
-//				}
-//		};
-//		
-//		thread.start();
-//	}
+	@Override
+	public void run() {
+		itemsList.clear();
+		Thread thread = new Thread()
+		{
+			@Override
+	        public void run()
+			{
+				synchronized(this)
+				{
+					
+					DatabaseAPI api = new DatabaseAPI();
+					Account account = api.getAccountInfoByUserID("Daotoo");
+					ArrayList<CalendarItem> itemsList = (ArrayList<CalendarItem>) api.getUsersItems(account.getUserID());
+					adapter.setItems(itemsList);
+					adapter.notifyDataSetChanged();
+				};
+				
+			}
+		};
+		
+		thread.start();
+	}
 };
 
 //Override the onKeyDown method  
