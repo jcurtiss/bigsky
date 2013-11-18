@@ -33,7 +33,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.ISU.shoppingsidekick.ScanActivity;
+import com.ISU.shoppingsidekick.HomeActivity;
 
 /**
  * <p>A utility class which helps ease integration with Barcode Scanner via {@link Intent}s. This is a simple
@@ -139,7 +139,7 @@ public class IntentIntegrator {
           // What else supports this intent?
       );
   
-  private final ScanActivity activity;
+  private final HomeActivity activity;
   private String title;
   private String message;
   private String buttonYes;
@@ -147,7 +147,7 @@ public class IntentIntegrator {
   private List<String> targetApplications;
   private final Map<String,Object> moreExtras;
   
-  public IntentIntegrator(ScanActivity activity) {
+  public IntentIntegrator(HomeActivity activity) {
     this.activity = activity;
     title = DEFAULT_TITLE;
     message = DEFAULT_MESSAGE;
@@ -344,7 +344,7 @@ public class IntentIntegrator {
    */
   public static IntentResult parseActivityResult(int requestCode, int resultCode, Intent intent) {
     if (requestCode == REQUEST_CODE) {
-      if (resultCode == ScanActivity.RESULT_OK) {
+      if (resultCode == HomeActivity.RESULT_OK) {
         String contents = intent.getStringExtra("SCAN_RESULT");
         String formatName = intent.getStringExtra("SCAN_RESULT_FORMAT");
         byte[] rawBytes = intent.getByteArrayExtra("SCAN_RESULT_BYTES");
