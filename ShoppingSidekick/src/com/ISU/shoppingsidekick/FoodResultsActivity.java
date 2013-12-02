@@ -28,10 +28,10 @@ public class FoodResultsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_food_results);
 		
-		//String scanValue = null;
+		Bundle scanVal = null;
 		
 		Intent scannerValue = getIntent();
-		Bundle scanVal = scannerValue.getExtras();
+		scanVal = scannerValue.getExtras();
 		TextView productName = (TextView) findViewById(R.id.productName);
 		TextView productBrand = (TextView) findViewById(R.id.productBrand);
 		TextView productID = (TextView) findViewById(R.id.productID);
@@ -50,7 +50,14 @@ public class FoodResultsActivity extends Activity {
 				@Override
 				public Object call() throws Exception{
 					DatabaseAPI database = new DatabaseAPI();
-					return database.getFoodItemByID(scanValue);
+					
+					Food food = database.getFoodItemByID(scanValue);
+					if(food.getName() != null){
+						return food;
+					}
+					else{
+						return null;
+					}
 				}
 			};
 			Future<Food> future = pool.submit(task);
@@ -65,24 +72,34 @@ public class FoodResultsActivity extends Activity {
 				e.printStackTrace();
 			}
 			
-			Expiration expirationInfo = scannedFood.getExpirationInformation();
-			Price priceInfo = scannedFood.getPriceInformation();
-			List<Review> reviewInfo = scannedFood.getReviewInformation();
-			
-			name = scannedFood.getName();
-			brand = scannedFood.getBrand();
-			id = scannedFood.getID();
-			productName.setText(name);
-			
-			productBrand.setText(brand);
-			
-			productID.setText(id);
-			
-			expInformation.setText("Average Expiration" + " " + expirationInfo.getAvgHours());
-			
-			priceInformation.setText("Average Price" + " " + priceInfo.getAvgPrice());
-			
-			reviewInformation.setText("Review" + " " + reviewInfo.get(0).getReview());
+			if(scannedFood.getID() != null){
+				Expiration expirationInfo = scannedFood.getExpirationInformation();
+				Price priceInfo = scannedFood.getPriceInformation();
+				List<Review> reviewInfo = scannedFood.getReviewInformation();
+				
+				name = scannedFood.getName();
+				brand = scannedFood.getBrand();
+				id = scannedFood.getID();
+				productName.setText(name);
+				
+				productBrand.setText(brand);
+				
+				productID.setText(id);
+				
+				expInformation.setText("Average Expiration" + " " + expirationInfo.getAvgHours());
+				
+				priceInformation.setText("Average Price" + " " + priceInfo.getAvgPrice());
+				
+				reviewInformation.setText("Review" + " " + reviewInfo.get(0).getReview());
+			}
+			else{
+				productName.setText("Item not found");
+				productBrand.setVisibility(View.INVISIBLE);
+				productID.setVisibility(View.INVISIBLE);
+				expInformation.setVisibility(View.INVISIBLE);
+				priceInformation.setVisibility(View.INVISIBLE);
+				reviewInformation.setVisibility(View.INVISIBLE);
+			}
 		}
 		
 		else{
