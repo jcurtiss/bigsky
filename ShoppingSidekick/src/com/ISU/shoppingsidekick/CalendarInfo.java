@@ -27,34 +27,44 @@ public class CalendarInfo extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		final ArrayList<CalendarItem> itemsList;
+		final ArrayList<Food> foodItems = new ArrayList<Food>();
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_calendar_info);
+		
+		Intent calDate = getIntent();
+		Bundle date = null;
+		date = calDate.getExtras();
 		
 		TextView foodName = (TextView) findViewById(R.id.foodName);
 		TextView dateStarted = (TextView) findViewById(R.id.dateAdded);
 		TextView dateExpired = (TextView) findViewById(R.id.dateExpires);
-		final ArrayList<CalendarItem> itemsList;
-		final ArrayList<Food> foodItems = null;
-		
 		String name = "";
-		String dStart= "";
-		String dExp ="";		
+		double dStart= 0;
+		String dExp ="";	
+		final String dateClicked = date.getString("date");
 		ExecutorService pool = Executors.newFixedThreadPool(3);
 		Callable task = new Callable(){
 			@Override
 			public Object call() throws Exception{
 				DatabaseAPI db = new DatabaseAPI();
 				Account account = db.getAccountInfoByUserID("Daotoo");
-				itemsList = (ArrayList<CalendarItem>) db.getUsersItems(account.getUserID());
-				for(int i = 0; i < itemsList.size(); i++){
-					foodItems.add(itemsList.get(i).getFood());
+				ArrayList<CalendarItem> calItems;
+				calItems = (ArrayList<CalendarItem>) db.getUsersItems(account.getUserID());
+				for(int i = 0; i < calItems.size(); i++){
+					if(calItems.get(i).getDateExpired().toString() == dateClicked)
+					foodItems.add(calItems.get(i).getFood());
 				}
+				return foodItems;
 			}
 		};
-		Future<Food> future = pool.submit(task);
-		Food food = foodItems.get(1);
+		Future<ArrayList<Food>> future = pool.submit(task);
+		ArrayList<Food> fI = foodItems;
+		
 		try {
-			food = future.get();
+			fI = future.get();
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -63,13 +73,11 @@ public class CalendarInfo extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		if(food.getID() != null){
-			Expiration expirationInfo = food.getExpirationInformation();
+		for(int i = 0; i < fI.size(); i++){
+		if(fI.get(i).getID() != null){
+			Expiration expirationInfo = fI.get(i).getExpirationInformation();
 			
-			name = food.getName();
-			//dStart = expirationInfo.getAvgHours();
-			dExp = food.getID();
+			name = fI.get(i).getName();
 			
 			foodName.setText(name);
 			
@@ -78,7 +86,7 @@ public class CalendarInfo extends Activity {
 			dateExpired.setText("Expiration Date" + " " + expirationInfo.getAvgHours());
 			
 		}
-	
+		}
 		
 		
 		

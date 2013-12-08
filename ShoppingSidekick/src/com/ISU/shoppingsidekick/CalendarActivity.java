@@ -93,6 +93,7 @@ public class CalendarActivity extends Activity {
 	        	intent.putExtra("date", android.text.format.DateFormat.format("yyyy-MM", month)+"-"+day);
 	        	setResult(RESULT_OK, intent);
 	        	Intent i = new Intent(CalendarActivity.this, CalendarInfo.class);
+	        	i.putExtras(intent);
 				startActivity(i);
 			}
 	        	finish();
