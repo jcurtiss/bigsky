@@ -340,7 +340,7 @@ public class DatabaseAPI {
 			while(rs.next())
 			{
 				CalendarItem calendarItem = new CalendarItem();
-				calendarItem.setDateExpired(rs.getDate("DateExpired"));
+				calendarItem.setDateStarted(rs.getDate("DateEntered"));;
 				calendarItem.setDateExpired(rs.getDate("DateExpired"));
 				calendarItem.setFood(getFoodItemByID(rs.getString("FoodID")));
 				calendarItems.add(calendarItem);
