@@ -7,93 +7,61 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/background_color"
+    android:layout_gravity="center"
     tools:context=".LoginActivity" >
 
-    <TableRow
-        android:id="@+id/tableRow1"
+    <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:text="Username:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_color"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Username:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow2"
+    <EditText
+        android:id="@+id/LoginTextUsername"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:textColor="@color/text_color"
+        android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/LoginTextUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10" />
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow3"
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:text="Password:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_color"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Password:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow4"
+    <EditText
+        android:id="@+id/LoginTextPassword"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textColor="@color/text_color"
+        android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/LoginTextPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword" >
-
-            <requestFocus />
-        </EditText>
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow5"
+    <Button
+        android:id="@+id/LoginButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textColor="@color/text_color"
+        android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/LoginButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login" />
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow6"
+    <TextView
+        android:id="@+id/loginErrorMessage"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/loginErrorMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Incorrect login information"
-            android:visibility="gone"
-            android:textColor="#BD2031"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    </TableRow>
+        android:layout_height="wrap_content"
+        android:text="Incorrect login information"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#BD2031"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
 </TableLayout>

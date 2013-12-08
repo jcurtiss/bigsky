@@ -1,75 +1,59 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/TableLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/background_color"
+    android:layout_gravity="center"
     tools:context=".HomeActivity" >
-
-    <Button
-        android:id="@+id/goToCalendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="43dp"
-        android:layout_marginTop="46dp"
-        android:layout_toLeftOf="@+id/goToSettings"
-        android:text="Calendar" />
-
-    <Button
-        android:id="@+id/goToSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/goToCalendar"
-        android:layout_alignBottom="@+id/goToCalendar"
-        android:layout_alignLeft="@+id/goToRecentActivity"
-        android:text="Settings" />
-
-    <Button
-        android:id="@+id/goToRecipes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/goToScan"
-        android:layout_alignBottom="@+id/goToScan"
-        android:layout_alignRight="@+id/goToCalendar"
-        android:text="Recipes" />
 
     <Button
         android:id="@+id/scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/goToSettings"
-        android:layout_below="@+id/goToSettings"
-        android:layout_marginTop="49dp"
-        android:text="Scan" />
-
-    <Button
-        android:id="@+id/goToRecentActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="43dp"
-        android:text="Recent Activity" />
+        android:text="Scan"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/text_color"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/goToFoodFinder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/goToRecentActivity"
-        android:layout_alignBottom="@+id/goToRecentActivity"
-        android:layout_alignRight="@+id/goToRecipes"
-        android:text="Food Finder" />
+        android:text="Food Finder"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/text_color"
+        android:textStyle="bold" />
 
     <Button
-        android:id="@+id/goToFoodResults"
+        android:id="@+id/goToCalendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/goToRecentActivity"
-        android:layout_below="@+id/goToFoodFinder"
-        android:layout_marginRight="18dp"
-        android:text="Food Results" />
+        android:text="Calendar"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/text_color"
+        android:textStyle="bold" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/goToRecipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recipes"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/text_color"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/goToRecentActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recent Activity"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/text_color"
+        android:textStyle="bold" />
+
+</TableLayout>

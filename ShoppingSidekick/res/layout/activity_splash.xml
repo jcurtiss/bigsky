@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="@color/background_color"
     tools:context=".SplashActivity" >
 
     <!--
@@ -18,7 +18,7 @@
         android:gravity="center"
         android:keepScreenOn="true"
         android:text="Shopping Sidekick"
-        android:textColor="#33b5e5"
+        android:textColor="@color/text_color"
         android:textSize="50sp"
         android:textStyle="bold" />
 
