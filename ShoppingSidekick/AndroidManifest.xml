@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
@@ -89,6 +89,10 @@
         <activity
             android:name="com.ISU.shoppingsidekick.CalendarInfo"
             android:label="@string/title_activity_calendar_info" >
+        </activity>
+        <activity
+            android:name="com.ISU.shoppingsidekick.LogInActivity"
+            android:label="@string/title_activity_log_in" >
         </activity>
     </application>
 
