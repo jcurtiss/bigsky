@@ -19,5 +19,6 @@
     <string name="scan">scan</string>
     <string name="open">Open</string>
     <string name="title_activity_calendar_info">CalendarInfo</string>
+    <string name="title_activity_log_in">LogInActivity</string>
 
 </resources>

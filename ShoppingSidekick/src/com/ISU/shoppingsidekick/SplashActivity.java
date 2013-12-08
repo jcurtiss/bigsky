@@ -40,7 +40,7 @@ public class SplashActivity extends Activity {
                 		wait(2000);
                 	}
                 }catch(InterruptedException e){};
-                Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 SplashActivity.this.startActivity(intent);
             }
         };

@@ -349,7 +349,24 @@ public class DatabaseAPI {
 			System.out.println("There was an error in the getUsersItems method. Error message: " + e.getMessage());
 		}
 		return calendarItems;
-	}	
+	}
+	
+	public Boolean checkUserLogin(String Username, String password)
+	{
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM Account WHERE UserID = ? AND Password = ?");
+			ps.setString(1, Username);
+			ps.setString(2, password);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next())
+			{
+				return true;
+			}
+		} catch (SQLException e) {
+			System.out.println("There was an error in the checkUserLogin method. Error message: " + e.getMessage());
+		}
+		return false;
+	}
 		
 	//Public create methods
 	
