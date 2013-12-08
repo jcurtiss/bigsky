@@ -17,6 +17,8 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.Database.API.Account;
@@ -70,6 +72,8 @@ public class CalendarActivity extends Activity {
 			} else {
 				month.set(Calendar.MONTH,month.get(Calendar.MONTH)+1);
 			}
+			ImageView iv = (ImageView) findViewById(R.id.date_icon);
+			iv.setVisibility(View.INVISIBLE);
 			refreshCalendar();
 			
 		}
@@ -99,10 +103,9 @@ public class CalendarActivity extends Activity {
 public void refreshCalendar()
 {
 	TextView title  = (TextView) findViewById(R.id.title);
-	
 	adapter.refreshDays();
 	adapter.notifyDataSetChanged();				
-	handler.post(calendarUpdater); // generate some random calendar items
+	handler.post(calendarUpdater); 
 	
 	title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
 }
@@ -116,6 +119,7 @@ Boolean flag = true;
 ArrayList<CalendarItem> itemsList;
 public Runnable calendarUpdater = new Runnable() {
 	
+	
 	@Override
 	public void run() {
 		Thread thread = new Thread()
@@ -125,7 +129,7 @@ public Runnable calendarUpdater = new Runnable() {
 			{
 				synchronized(this)
 				{
-					
+										
 					DatabaseAPI api = new DatabaseAPI();
 					Account account = api.getAccountInfoByUserID("Daotoo");
 					itemsList = (ArrayList<CalendarItem>) api.getUsersItems(account.getUserID());
