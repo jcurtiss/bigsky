@@ -80,17 +80,17 @@ public class FoodResultsActivity extends Activity {
 				name = scannedFood.getName();
 				brand = scannedFood.getBrand();
 				id = scannedFood.getID();
-				productName.setText(name);
+				productName.setText("Product: " + name);
 				
-				productBrand.setText(brand);
+				productBrand.setText("Product brand: " + brand);
 				
-				productID.setText(id);
+				productID.setText("Product ID: " + id);
 				
-				expInformation.setText("Average Expiration" + " " + expirationInfo.getAvgHours());
+				expInformation.setText("Average Expiration: " + expirationInfo.getAvgHours() + " Hours");
 				
-				priceInformation.setText("Average Price" + " " + priceInfo.getAvgPrice());
+				priceInformation.setText("Average Price: " + "$" + priceInfo.getAvgPrice());
 				
-				reviewInformation.setText("Review" + " " + reviewInfo.get(0).getReview());
+				reviewInformation.setText("Review: " + reviewInfo.get(0).getReview());
 			}
 			else{
 				productName.setText("Item not found");
@@ -110,16 +110,6 @@ public class FoodResultsActivity extends Activity {
 			priceInformation.setVisibility(View.INVISIBLE);
 			reviewInformation.setVisibility(View.INVISIBLE);
 		}	
-			
-		//confirmation button     
-//        Button goToScanBtn = (Button) findViewById(R.id.resultsToConfirmation);
-//        goToScanBtn.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Intent i = new Intent(FoodResultsActivity.this, FoodConfirmationActivity.class);
-//				startActivity(i);
-//			}
-//		});
         
         //home button
         Button goToFoodFinderBtn = (Button) findViewById(R.id.resultsToHome);

@@ -86,10 +86,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="com.ISU.shoppingsidekick.CalendarInfo"
-            android:label="@string/title_activity_calendar_info" >
+            android:label="@string/title_activity_calendar_info"
+            android:parentActivityName="com.ISU.shoppingsidekick.CalendarActivity">
+            <meta-data
+      		 	android:name="android.support.PARENT_ACTIVITY"
+       			android:value="PARENT_ACTIVITY_PATH" />
         </activity>
+        
         <activity
             android:name="com.ISU.shoppingsidekick.LogInActivity"
             android:label="@string/title_activity_log_in" >

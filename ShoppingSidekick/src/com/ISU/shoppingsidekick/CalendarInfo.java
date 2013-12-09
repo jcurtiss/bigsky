@@ -21,15 +21,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class CalendarInfo extends Activity {
+	
+	ArrayList<CalendarItem> itemsList;
+	ArrayList<Food> foodItems = new ArrayList<Food>();
+	ArrayList<String> foodNames = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
-		final ArrayList<CalendarItem> itemsList;
-		final ArrayList<Food> foodItems = new ArrayList<Food>();
+		
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_calendar_info);
@@ -37,28 +45,48 @@ public class CalendarInfo extends Activity {
 		Intent calDate = getIntent();
 		Bundle date = null;
 		date = calDate.getExtras();
+		ArrayAdapter<String> adapter;
 		
-		TextView foodName = (TextView) findViewById(R.id.foodName);
-		TextView dateStarted = (TextView) findViewById(R.id.dateAdded);
-		TextView dateExpired = (TextView) findViewById(R.id.dateExpires);
-		String name = "";
-		double dStart= 0;
-		String dExp ="";	
+		TextView dateView = (TextView) findViewById(R.id.dateView);
+		TextView foodStatement = (TextView) findViewById(R.id.foodStatement);
+		final ListView resultsListView = (ListView) findViewById(R.id.foodItemsList);	
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, foodNames);
+		resultsListView.setAdapter(adapter);
+		resultsListView.setOnItemClickListener(new OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				String str = (String) resultsListView.getItemAtPosition(position);
+				if(!str.equals("No search results found")){
+					Food food = foodItems.get(position);
+					Intent i = new Intent(CalendarInfo.this, FoodResultsActivity.class);
+					i.putExtra("scanID", food.getID());
+					startActivity(i);
+				}
+			}
+		});
+		
 		final String dateClicked = date.getString("date");
 		ExecutorService pool = Executors.newFixedThreadPool(3);
 		Callable task = new Callable(){
 			@Override
 			public Object call() throws Exception{
+				return getFoodItems(dateClicked);
+			}
+				
+			private ArrayList<Food> getFoodItems(String clicked){
 				DatabaseAPI db = new DatabaseAPI();
+				clicked = dateClicked;
 				Account account = db.getAccountInfoByUserID("Daotoo");
 				ArrayList<CalendarItem> calItems;
 				calItems = (ArrayList<CalendarItem>) db.getUsersItems(account.getUserID());
 				for(int i = 0; i < calItems.size(); i++){
-					if(calItems.get(i).getDateExpired().toString() == dateClicked)
+					if(calItems.get(i).getDateExpired().toString().contains(clicked)){
 					foodItems.add(calItems.get(i).getFood());
+					}
 				}
 				return foodItems;
 			}
+			
 		};
 		Future<ArrayList<Food>> future = pool.submit(task);
 		ArrayList<Food> fI = foodItems;
@@ -73,25 +101,27 @@ public class CalendarInfo extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		dateView.setText("You have selected the date: " + dateClicked);
+		if(foodItems.size() > 0)
+		foodStatement.setText("The following items expire on this day:");
+		else
+			foodStatement.setText("Nothing expires today.");
 		for(int i = 0; i < fI.size(); i++){
 		if(fI.get(i).getID() != null){
-			Expiration expirationInfo = fI.get(i).getExpirationInformation();
-			
-			name = fI.get(i).getName();
-			
-			foodName.setText(name);
-			
-			dateStarted.setText("Expiration Date" + " " + expirationInfo.getShortHours());
-			
-			dateExpired.setText("Expiration Date" + " " + expirationInfo.getAvgHours());
+			populateResultsList();
 			
 		}
+	}
+		
+		
+				
+	}
+	
+	public void populateResultsList(){
+		foodNames.clear();
+		for(int i = 0; i < foodItems.size(); i++){
+			foodNames.add(foodItems.get(i).getName());
 		}
-		
-		
-		
-		
-		
 	}
 
 	@Override
