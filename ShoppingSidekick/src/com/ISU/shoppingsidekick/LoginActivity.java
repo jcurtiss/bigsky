@@ -3,6 +3,8 @@ package com.ISU.shoppingsidekick;
 import com.Database.API.DatabaseAPI;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
@@ -23,22 +25,24 @@ public class LoginActivity extends Activity {
         goToHomeBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				final TextView errorMessage = ((TextView) findViewById(R.id.loginErrorMessage));
-				errorMessage.setVisibility(View.GONE);
 				final String username = ((EditText) findViewById(R.id.LoginTextUsername)).getText().toString();
 				final String password = ((EditText) findViewById(R.id.LoginTextPassword)).getText().toString();
 		        Thread thread=new Thread(){
 		            @Override
 		            public void run(){
+		            	hideMessage();
 						if(new DatabaseAPI().checkUserLogin(username, password))
 						{
 							Intent i = new Intent(LoginActivity.this, HomeActivity.class);
 							startActivity(i);
 						}
+						else
+						{
+							showMessage();
+						}
 		            }
 		        };
 		        thread.start();
-		        errorMessage.setVisibility(View.VISIBLE);
 			}
 		});
 	}
@@ -48,6 +52,32 @@ public class LoginActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
+	}
+	
+	public void showMessage()
+	{
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.post(new Runnable(){
+
+			@Override
+			public void run() {
+				final TextView errorMessage = ((TextView) findViewById(R.id.loginErrorMessage));
+				errorMessage.setVisibility(View.VISIBLE);
+			}
+		});
+	}
+	
+	public void hideMessage()
+	{
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.post(new Runnable(){
+
+			@Override
+			public void run() {
+				final TextView errorMessage = ((TextView) findViewById(R.id.loginErrorMessage));
+				errorMessage.setVisibility(View.GONE);
+			}
+		});
 	}
 
 }
