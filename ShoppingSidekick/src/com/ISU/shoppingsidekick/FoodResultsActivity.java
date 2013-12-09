@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.Database.API.Account;
 import com.Database.API.DatabaseAPI;
 import com.Database.API.Expiration;
 import com.Database.API.Food;
@@ -34,7 +35,6 @@ public class FoodResultsActivity extends Activity {
 		scanVal = scannerValue.getExtras();
 		TextView productName = (TextView) findViewById(R.id.productName);
 		TextView productBrand = (TextView) findViewById(R.id.productBrand);
-		TextView productID = (TextView) findViewById(R.id.productID);
 		TextView expInformation = (TextView) findViewById(R.id.expInformation);
 		TextView priceInformation = (TextView) findViewById(R.id.priceInformation);
 		TextView reviewInformation = (TextView) findViewById(R.id.reviewInformation);
@@ -84,18 +84,21 @@ public class FoodResultsActivity extends Activity {
 				
 				productBrand.setText("Product brand: " + brand);
 				
-				productID.setText("Product ID: " + id);
-				
 				expInformation.setText("Average Expiration: " + expirationInfo.getAvgHours() + " Hours");
 				
 				priceInformation.setText("Average Price: " + "$" + priceInfo.getAvgPrice());
 				
 				reviewInformation.setText("Review: " + reviewInfo.get(0).getReview());
+				String str = "Review: ";
+				for(int i = 0; i < 3; i++)
+				{
+					Review itemToAdd = reviewInfo.get(i);
+					str += itemToAdd != null ? reviewInfo.get(i).getReview() + "\n" : "";
+				}
 			}
 			else{
 				productName.setText("Item not found");
 				productBrand.setVisibility(View.INVISIBLE);
-				productID.setVisibility(View.INVISIBLE);
 				expInformation.setVisibility(View.INVISIBLE);
 				priceInformation.setVisibility(View.INVISIBLE);
 				reviewInformation.setVisibility(View.INVISIBLE);
@@ -105,19 +108,31 @@ public class FoodResultsActivity extends Activity {
 		else{
 			productName.setText("Item not found");
 			productBrand.setVisibility(View.INVISIBLE);
-			productID.setVisibility(View.INVISIBLE);
 			expInformation.setVisibility(View.INVISIBLE);
 			priceInformation.setVisibility(View.INVISIBLE);
 			reviewInformation.setVisibility(View.INVISIBLE);
 		}	
         
         //home button
-        Button goToFoodFinderBtn = (Button) findViewById(R.id.resultsToHome);
+        Button goToFoodFinderBtn = (Button) findViewById(R.id.addItem);
         goToFoodFinderBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(FoodResultsActivity.this, HomeActivity.class);
-				startActivity(i);
+				Thread thread = new Thread(){
+					@Override
+					public void run()
+					{
+						Account account = (Account) getIntent().getExtras().get("account");
+						final String scanValue = getIntent().getExtras().getString("scanID");
+						DatabaseAPI database = new DatabaseAPI();
+						Food food = database.getFoodItemByID(scanValue);
+						database.addFoodItemToUserTable(account.getUserID(), food);
+						Intent i = new Intent(FoodResultsActivity.this, HomeActivity.class);
+						i.putExtra("account", account);
+						startActivity(i);
+					}
+				};
+				thread.start();
 			}
 		});
 	}
