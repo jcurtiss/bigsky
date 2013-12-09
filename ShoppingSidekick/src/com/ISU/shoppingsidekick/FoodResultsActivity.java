@@ -28,6 +28,7 @@ public class FoodResultsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_food_results);
+		final Account a = (Account) getIntent().getExtras().get("account");
 		
 		Bundle scanVal = null;
 		
@@ -45,7 +46,6 @@ public class FoodResultsActivity extends Activity {
 		if(scanVal != null){		
 			final String scanValue = scanVal.getString("scanID");
 			ExecutorService pool = Executors.newFixedThreadPool(3);
-//			final String scanValue = "085239311189";
 			Callable task = new Callable(){
 				@Override
 				public Object call() throws Exception{

@@ -76,9 +76,9 @@ public class CalendarInfo extends Activity {
 			private ArrayList<Food> getFoodItems(String clicked){
 				DatabaseAPI db = new DatabaseAPI();
 				clicked = dateClicked;
-				Account account = db.getAccountInfoByUserID("Daotoo");
+				final Account a = (Account) getIntent().getExtras().get("account");
 				ArrayList<CalendarItem> calItems;
-				calItems = (ArrayList<CalendarItem>) db.getUsersItems(account.getUserID());
+				calItems = (ArrayList<CalendarItem>) db.getUsersItems(a.getUserID());
 				for(int i = 0; i < calItems.size(); i++){
 					if(calItems.get(i).getDateExpired().toString().contains(clicked)){
 					foodItems.add(calItems.get(i).getFood());
@@ -111,10 +111,7 @@ public class CalendarInfo extends Activity {
 			populateResultsList();
 			
 		}
-	}
-		
-		
-				
+	}			
 	}
 	
 	public void populateResultsList(){
@@ -130,18 +127,6 @@ public class CalendarInfo extends Activity {
 		getMenuInflater().inflate(R.menu.calendar_info, menu);
 		return true;
 	}
-	
-	//Override the onKeyDown method  
-    @Override  
-    public boolean onKeyDown(int keyCode, KeyEvent event)  
-    {  
-        //replaces the default 'Back' button action  
-        if(keyCode==KeyEvent.KEYCODE_BACK)  
-        {  
-            //Go back to calendar activity when back button is pressed  
-            this.startActivity(new Intent(CalendarInfo.this, CalendarActivity.class));  
-        }  
-        return true;  
-    }  
+	  
 
 }
