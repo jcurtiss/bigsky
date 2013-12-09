@@ -1,5 +1,6 @@
 package com.ISU.shoppingsidekick;
 
+import com.Database.API.Account;
 import com.Database.API.DatabaseAPI;
 
 import android.os.Bundle;
@@ -31,14 +32,17 @@ public class LoginActivity extends Activity {
 		            @Override
 		            public void run(){
 		            	hideMessage();
-						if(new DatabaseAPI().checkUserLogin(username, password))
+		            	DatabaseAPI d = new DatabaseAPI();
+						if(d.checkUserLogin(username, password))
 						{
+							
 							Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+							Account a = d.getAccountInfoByUserID(username);
+							i.putExtra("account", a);
 							startActivity(i);
 						}
-						else
-						{
-							showMessage();
+						else{
+						showMessage();
 						}
 		            }
 		        };

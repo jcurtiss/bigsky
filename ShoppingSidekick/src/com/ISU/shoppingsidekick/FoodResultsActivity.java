@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.Database.API.Account;
 import com.Database.API.DatabaseAPI;
 import com.Database.API.Expiration;
 import com.Database.API.Food;
@@ -27,6 +28,7 @@ public class FoodResultsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_food_results);
+		final Account a = (Account) getIntent().getExtras().get("account");
 		
 		Bundle scanVal = null;
 		
@@ -45,7 +47,6 @@ public class FoodResultsActivity extends Activity {
 		if(scanVal != null){		
 			final String scanValue = scanVal.getString("scanID");
 			ExecutorService pool = Executors.newFixedThreadPool(3);
-//			final String scanValue = "085239311189";
 			Callable task = new Callable(){
 				@Override
 				public Object call() throws Exception{
@@ -117,6 +118,7 @@ public class FoodResultsActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(FoodResultsActivity.this, HomeActivity.class);
+				i.putExtra("account", a);
 				startActivity(i);
 			}
 		});
