@@ -3,7 +3,6 @@
     package="com.ISU.shoppingsidekick"
     android:versionCode="1"
     android:versionName="1.0" >
-
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="18" />
@@ -28,7 +27,8 @@
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.FoodFinderActivity"
-            android:label="@string/title_activity_food_finder" >
+            android:label="@string/title_activity_food_finder"
+            android:theme="@style/ListFont" >
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.LoginActivity"
@@ -40,7 +40,8 @@
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.RecipesActivity"
-            android:label="@string/title_activity_recipes" >
+            android:label="@string/title_activity_recipes"
+            android:theme="@style/ListFont" >
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.FoodResultsActivity"
@@ -52,7 +53,8 @@
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.CalendarActivity"
-            android:label="@string/title_activity_calendar" >
+            android:label="@string/title_activity_calendar"
+             >
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.FoodConfirmationActivity"
