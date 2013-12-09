@@ -16,22 +16,6 @@
         android:layout_height="wrap_content" >
 
         <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/productID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="35dp"
-                android:layout_marginTop="35dp"
-                android:text="productID"
-                android:textColor="@color/text_color"
-                android:textSize="15sp" />
-        </TableRow>
-
-        <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -71,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="35dp"
-                android:text="priceInformation"
+                android:text="Price Information"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
         </TableRow>
@@ -86,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="35dp"
-                android:text="expInformation"
+                android:text="Expiration Information"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
         </TableRow>
@@ -101,17 +85,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="35dp"
-                android:text="reviewInformation"
+                android:text="review Information"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
         </TableRow>
     </TableLayout>
 
     <Button
-        android:id="@+id/resultsToHome"
+        android:id="@+id/addItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home"
+        android:text="Add item to my account"
         android:textColor="@color/text_color"
         android:textStyle="bold" />
 
