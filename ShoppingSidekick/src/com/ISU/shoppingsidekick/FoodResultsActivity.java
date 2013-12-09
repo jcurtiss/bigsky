@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.Database.API.Account;
 import com.Database.API.DatabaseAPI;
 import com.Database.API.Expiration;
 import com.Database.API.Food;
@@ -27,6 +28,7 @@ public class FoodResultsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_food_results);
+		final Account a = (Account) getIntent().getExtras().get("account");
 		
 		Bundle scanVal = null;
 		
@@ -34,7 +36,6 @@ public class FoodResultsActivity extends Activity {
 		scanVal = scannerValue.getExtras();
 		TextView productName = (TextView) findViewById(R.id.productName);
 		TextView productBrand = (TextView) findViewById(R.id.productBrand);
-		TextView productID = (TextView) findViewById(R.id.productID);
 		TextView expInformation = (TextView) findViewById(R.id.expInformation);
 		TextView priceInformation = (TextView) findViewById(R.id.priceInformation);
 		TextView reviewInformation = (TextView) findViewById(R.id.reviewInformation);
@@ -45,7 +46,6 @@ public class FoodResultsActivity extends Activity {
 		if(scanVal != null){		
 			final String scanValue = scanVal.getString("scanID");
 			ExecutorService pool = Executors.newFixedThreadPool(3);
-//			final String scanValue = "085239311189";
 			Callable task = new Callable(){
 				@Override
 				public Object call() throws Exception{
@@ -80,22 +80,25 @@ public class FoodResultsActivity extends Activity {
 				name = scannedFood.getName();
 				brand = scannedFood.getBrand();
 				id = scannedFood.getID();
-				productName.setText(name);
+				productName.setText("Product: " + name);
 				
-				productBrand.setText(brand);
+				productBrand.setText("Product brand: " + brand);
 				
-				productID.setText(id);
+				expInformation.setText("Average Expiration: " + expirationInfo.getAvgHours() + " Hours");
 				
-				expInformation.setText("Average Expiration" + " " + expirationInfo.getAvgHours());
+				priceInformation.setText("Average Price: " + "$" + priceInfo.getAvgPrice());
 				
-				priceInformation.setText("Average Price" + " " + priceInfo.getAvgPrice());
-				
-				reviewInformation.setText("Review" + " " + reviewInfo.get(0).getReview());
+				reviewInformation.setText("Review: " + reviewInfo.get(0).getReview());
+				String str = "Review: ";
+				for(int i = 0; i < 3; i++)
+				{
+					Review itemToAdd = reviewInfo.get(i);
+					str += itemToAdd != null ? reviewInfo.get(i).getReview() + "\n" : "";
+				}
 			}
 			else{
 				productName.setText("Item not found");
 				productBrand.setVisibility(View.INVISIBLE);
-				productID.setVisibility(View.INVISIBLE);
 				expInformation.setVisibility(View.INVISIBLE);
 				priceInformation.setVisibility(View.INVISIBLE);
 				reviewInformation.setVisibility(View.INVISIBLE);
@@ -105,29 +108,31 @@ public class FoodResultsActivity extends Activity {
 		else{
 			productName.setText("Item not found");
 			productBrand.setVisibility(View.INVISIBLE);
-			productID.setVisibility(View.INVISIBLE);
 			expInformation.setVisibility(View.INVISIBLE);
 			priceInformation.setVisibility(View.INVISIBLE);
 			reviewInformation.setVisibility(View.INVISIBLE);
 		}	
-			
-		//confirmation button     
-//        Button goToScanBtn = (Button) findViewById(R.id.resultsToConfirmation);
-//        goToScanBtn.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Intent i = new Intent(FoodResultsActivity.this, FoodConfirmationActivity.class);
-//				startActivity(i);
-//			}
-//		});
         
         //home button
-        Button goToFoodFinderBtn = (Button) findViewById(R.id.resultsToHome);
+        Button goToFoodFinderBtn = (Button) findViewById(R.id.addItem);
         goToFoodFinderBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(FoodResultsActivity.this, HomeActivity.class);
-				startActivity(i);
+				Thread thread = new Thread(){
+					@Override
+					public void run()
+					{
+						Account account = (Account) getIntent().getExtras().get("account");
+						final String scanValue = getIntent().getExtras().getString("scanID");
+						DatabaseAPI database = new DatabaseAPI();
+						Food food = database.getFoodItemByID(scanValue);
+						database.addFoodItemToUserTable(account.getUserID(), food);
+						Intent i = new Intent(FoodResultsActivity.this, HomeActivity.class);
+						i.putExtra("account", account);
+						startActivity(i);
+					}
+				};
+				thread.start();
 			}
 		});
 	}

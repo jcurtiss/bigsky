@@ -1,5 +1,6 @@
 package com.ISU.shoppingsidekick;
 
+import com.Database.API.Account;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -21,6 +22,8 @@ public class HomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         
+    	final Account a = (Account) getIntent().getExtras().get("account");
+        
         
       //Scan button     
         Button goToScanBtn = (Button) findViewById(R.id.scan_button);
@@ -39,6 +42,7 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(HomeActivity.this, FoodFinderActivity.class);
+				i.putExtra("account", a);
 				startActivity(i);
 			}
 		});
@@ -49,6 +53,7 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(HomeActivity.this, RecentActionsActivity.class);
+				i.putExtra("account", a);
 				startActivity(i);
 			}
 		});
@@ -59,6 +64,7 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(HomeActivity.this, RecipesActivity.class);
+				i.putExtra("account", a);
 				startActivity(i);
 			}
 		});
@@ -69,6 +75,7 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(HomeActivity.this, CalendarActivity.class);
+				i.putExtra("account", a);
 				startActivity(i);
 			}
 		});
