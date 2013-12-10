@@ -88,13 +88,14 @@ public class FoodResultsActivity extends Activity {
 				
 				priceInformation.setText("Average Price: " + "$" + priceInfo.getAvgPrice());
 				
-				reviewInformation.setText("Review: " + reviewInfo.get(0).getReview());
 				String str = "Review: ";
-				for(int i = 0; i < 3; i++)
+				for(int i = 0; i < 3 && i < reviewInfo.size(); i++)
 				{
 					Review itemToAdd = reviewInfo.get(i);
-					str += itemToAdd != null ? reviewInfo.get(i).getReview() + "\n" : "";
+					str += itemToAdd != null ? itemToAdd.getReview() + "\n" : "";
 				}
+				reviewInformation.setText(str);
+				
 			}
 			else{
 				productName.setText("Item not found");
