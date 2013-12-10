@@ -75,7 +75,7 @@ public class RecipesActivity extends Activity {
 		}
         
         if(calendarItemList.size() == 0){
-        	listItems.add("No search results found");
+        	listItems.add("No recipes found. Add items to your account to see recipes.");
 	        adapter.notifyDataSetChanged();
         }
         else if(calendarItemList.size() > 0){
@@ -91,7 +91,8 @@ public class RecipesActivity extends Activity {
                 };
                 Future<ArrayList<Recipe>> future2 = pool2.submit(task);
                 try {
-        			recipeList.addAll(future2.get());
+                	ArrayList<Recipe> temp = future2.get();
+        			recipeList.addAll(temp);
         		} catch (InterruptedException e) {
         			e.printStackTrace();
         		} catch (ExecutionException e) {
@@ -99,7 +100,7 @@ public class RecipesActivity extends Activity {
         		}
                 
                 for(int j = 0; i < recipeList.size(); i++){
-                	listItems.add(recipeList.get(i).getName());
+                	listItems.add(recipeList.get(j).getName());
                 }
 		        adapter.notifyDataSetChanged();
 
