@@ -74,8 +74,6 @@ public class CalendarActivity extends Activity {
 			} else {
 				month.set(Calendar.MONTH,month.get(Calendar.MONTH)+1);
 			}
-			ImageView iv = (ImageView) findViewById(R.id.date_icon);
-			iv.setVisibility(View.INVISIBLE);
 			refreshCalendar();
 			
 		}
