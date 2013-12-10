@@ -88,11 +88,11 @@ public class FoodResultsActivity extends Activity {
 				
 				priceInformation.setText("Average Price: " + "$" + priceInfo.getAvgPrice());
 				
-				String str = "Review: ";
+				String str = "Reviews:\n\n";
 				for(int i = 0; i < 3 && i < reviewInfo.size(); i++)
 				{
 					Review itemToAdd = reviewInfo.get(i);
-					str += itemToAdd != null ? itemToAdd.getReview() + "\n" : "";
+					str += itemToAdd != null ? itemToAdd.getReview() + "\n\n" : "";
 				}
 				reviewInformation.setText(str);
 				
