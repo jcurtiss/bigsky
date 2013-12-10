@@ -118,6 +118,7 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(HomeActivity.this, RecipesActivity.class);
+				i.putExtra("account", a);
 				startActivity(i);
 			}
 		});
