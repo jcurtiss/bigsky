@@ -102,7 +102,6 @@ public class CalendarAdapter extends BaseAdapter {
         // show icon if date is not empty and it exists in the items array
         ImageView iw = (ImageView)v.findViewById(R.id.date_icon);
         iw.setVisibility(View.INVISIBLE);
-        if(myCal.get(Calendar.MONTH) == month.get(Calendar.MONTH))
         if(date.length()>0 && itemNums!=null && itemNums.contains(date)) {        	
         	iw.setVisibility(View.VISIBLE);
         }
@@ -113,8 +112,14 @@ public class CalendarAdapter extends BaseAdapter {
     }
     
     public int getDayFromDate(Date date){
-    		myCal.setTime(date);
-    		int day = myCal.get(Calendar.DAY_OF_MONTH);  
+    	int day = 0;
+    	Calendar cal = Calendar.getInstance();
+    	Date d = month.getTime();
+    	cal.setTime(d);
+    	myCal.setTime(date);
+    	if(myCal.get(Calendar.MONTH) == cal.get(Calendar.MONTH) && myCal.get(Calendar.YEAR) == cal.get(Calendar.YEAR)){
+    		day = myCal.get(Calendar.DAY_OF_MONTH);  
+    		}
 		return day;
     	
 }
