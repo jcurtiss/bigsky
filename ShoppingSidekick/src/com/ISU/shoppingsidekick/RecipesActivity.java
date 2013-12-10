@@ -1,6 +1,9 @@
 package com.ISU.shoppingsidekick;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -22,7 +25,6 @@ import android.widget.ListView;
 import com.Database.API.Account;
 import com.Database.API.CalendarItem;
 import com.Database.API.DatabaseAPI;
-import com.Database.API.Food;
 import com.Database.API.Recipe;
 
 public class RecipesActivity extends Activity {
@@ -73,39 +75,49 @@ public class RecipesActivity extends Activity {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-        
         if(calendarItemList.size() == 0){
         	listItems.add("No recipes found. Add items to your account to see recipes.");
 	        adapter.notifyDataSetChanged();
         }
         else if(calendarItemList.size() > 0){
+        	String query = "SELECT * FROM Recipe WHERE ";
         	for(int i = 0; i < calendarItemList.size(); i++){
-        		final Food f = calendarItemList.get(i).getFood();
-        		ExecutorService pool2 = Executors.newFixedThreadPool(3);
-        		task = new Callable(){
-        			@Override
-        			public Object call() throws Exception {
-        				DatabaseAPI d = new DatabaseAPI();
-        				return d.getRecipesByFoodID(f.getID()); //returns null right now
-        			}
-                };
-                Future<ArrayList<Recipe>> future2 = pool2.submit(task);
-                try {
-                	ArrayList<Recipe> temp = future2.get();
-        			recipeList.addAll(temp);
-        		} catch (InterruptedException e) {
-        			e.printStackTrace();
-        		} catch (ExecutionException e) {
-        			e.printStackTrace();
-        		}
-                
-                for(int j = 0; i < recipeList.size(); i++){
-                	listItems.add(recipeList.get(j).getName());
-                }
-		        adapter.notifyDataSetChanged();
-
+        		query += "ItemsID LIKE '%";
+        		query += calendarItemList.get(i).getFood().getID();
+        		query += "%' OR ";
         	}
-        	
+        	if(query.endsWith("OR "))
+        		query = query.substring(0, query.length() - 4);
+        	final String completeQuery = query;
+        	ExecutorService pool2 = Executors.newFixedThreadPool(3);
+    		task = new Callable(){
+    			@Override
+    			public Object call() throws Exception {
+    				DatabaseAPI d = new DatabaseAPI();
+    				return d.customQuery(completeQuery);
+    			}
+            };
+            Future<ResultSet> future2 = pool2.submit(task);
+            try {
+            	ResultSet rs = future2.get();
+            	if(rs != null){	
+	            	while(rs.next()){
+	            		listItems.add(rs.getString("Name"));
+	            		Recipe recipe = new Recipe();
+	            		recipe.setItemsID(new ArrayList<String>(Arrays.asList(rs.getString("ItemsID").split(","))));
+	    				recipe.setLink(rs.getString("Link"));
+	    				recipe.setName(rs.getString("Name"));
+	    				recipeList.add(recipe);
+	            	}
+            	}
+    		} catch (InterruptedException e) {
+    			e.printStackTrace();
+    		} catch (ExecutionException e) {
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+				e.printStackTrace();
+			}
+        	adapter.notifyDataSetChanged();
         }
 	}
 	
