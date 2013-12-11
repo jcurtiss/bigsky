@@ -27,7 +27,7 @@
                 android:layout_marginBottom="35dp"
                 android:text="productName"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
         </TableRow>
 
         <TableRow
@@ -42,7 +42,7 @@
                 android:layout_marginBottom="35dp"
                 android:text="productBrand"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
         </TableRow>
 
         <TableRow
@@ -57,7 +57,7 @@
                 android:layout_marginBottom="35dp"
                 android:text="Price Information"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
         </TableRow>
 
         <TableRow
@@ -72,7 +72,7 @@
                 android:layout_marginBottom="35dp"
                 android:text="Expiration Information"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
         </TableRow>
 
         <TableRow
@@ -87,7 +87,7 @@
                 android:layout_marginBottom="35dp"
                 android:text="review Information"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
         </TableRow>
     </TableLayout>
 

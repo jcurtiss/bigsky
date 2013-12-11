@@ -10,10 +10,13 @@ import java.util.concurrent.Future;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.Database.API.Account;
 import com.Database.API.DatabaseAPI;
@@ -28,7 +31,7 @@ public class FoodResultsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_food_results);
-		final Account a = (Account) getIntent().getExtras().get("account");
+		final Account account = (Account) getIntent().getExtras().get("account");
 		
 		Bundle scanVal = null;
 		
@@ -114,7 +117,7 @@ public class FoodResultsActivity extends Activity {
 			reviewInformation.setVisibility(View.INVISIBLE);
 		}	
         
-        //home button
+        //add button to account
         Button goToFoodFinderBtn = (Button) findViewById(R.id.addItem);
         goToFoodFinderBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -123,13 +126,13 @@ public class FoodResultsActivity extends Activity {
 					@Override
 					public void run()
 					{
-						Account account = (Account) getIntent().getExtras().get("account");
 						final String scanValue = getIntent().getExtras().getString("scanID");
 						DatabaseAPI database = new DatabaseAPI();
 						Food food = database.getFoodItemByID(scanValue);
 						database.addFoodItemToUserTable(account.getUserID(), food);
 						Intent i = new Intent(FoodResultsActivity.this, HomeActivity.class);
 						i.putExtra("account", account);
+						makeToast();
 						startActivity(i);
 					}
 				};
@@ -143,6 +146,19 @@ public class FoodResultsActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.food_results, menu);
 		return true;
+	}
+	
+	public void makeToast()
+	{
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.post(new Runnable(){
+
+			@Override
+			public void run() {
+				Toast toast = Toast.makeText(getApplicationContext(), "Item added successfully!", Toast.LENGTH_SHORT);
+				toast.show();
+			}
+		});
 	}
 
 }

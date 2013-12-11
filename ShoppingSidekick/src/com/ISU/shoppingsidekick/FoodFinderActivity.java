@@ -129,7 +129,7 @@ public class FoodFinderActivity extends Activity {
 		String st = "";
 		searchField = (EditText)findViewById(R.id.searchField);
 		if(searchField.length() > 0)
-			return searchField.getText().toString();
+			return searchField.getText().toString().trim();
 		else
 			st = "";
 		return st;
