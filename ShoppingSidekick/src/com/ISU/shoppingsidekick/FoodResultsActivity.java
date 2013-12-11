@@ -44,6 +44,8 @@ public class FoodResultsActivity extends Activity {
 		TextView expInformation = (TextView) findViewById(R.id.expInformation);
 		TextView priceInformation = (TextView) findViewById(R.id.priceInformation);
 		TextView reviewInformation = (TextView) findViewById(R.id.reviewInformation);
+		TextView notFound = (TextView) findViewById(R.id.itemNotFound);
+		notFound.setText("Item not found, please try again!");
 		String name = "";
 		String brand= "";
 		String id ="";
@@ -107,10 +109,12 @@ public class FoodResultsActivity extends Activity {
 					str += itemToAdd != null ? itemToAdd.getReview() + "\n\n" : "";
 				}
 				reviewInformation.setText(str);
+				showButton();
 				
 			}
 			else{
-				productName.setText("Item not found");
+				productName.setVisibility(View.INVISIBLE);
+				notFound.setVisibility(View.VISIBLE);
 				productBrand.setVisibility(View.INVISIBLE);
 				expInformation.setVisibility(View.INVISIBLE);
 				priceInformation.setVisibility(View.INVISIBLE);
@@ -119,7 +123,8 @@ public class FoodResultsActivity extends Activity {
 		}
 		
 		else{
-			productName.setText("Item not found");
+			productName.setVisibility(View.INVISIBLE);
+			notFound.setVisibility(View.VISIBLE);
 			productBrand.setVisibility(View.INVISIBLE);
 			expInformation.setVisibility(View.INVISIBLE);
 			priceInformation.setVisibility(View.INVISIBLE);
@@ -127,8 +132,8 @@ public class FoodResultsActivity extends Activity {
 		}	
         
         //add button to account
-        Button goToFoodFinderBtn = (Button) findViewById(R.id.addItem);
-        goToFoodFinderBtn.setOnClickListener(new View.OnClickListener() {
+        Button navBackHome = (Button) findViewById(R.id.addItem);
+        navBackHome.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Thread thread = new Thread(){
@@ -166,6 +171,19 @@ public class FoodResultsActivity extends Activity {
 			public void run() {
 				Toast toast = Toast.makeText(getApplicationContext(), "Item added successfully!", Toast.LENGTH_SHORT);
 				toast.show();
+			}
+		});
+	}
+	
+	public void showButton()
+	{
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.post(new Runnable(){
+
+			@Override
+			public void run() {
+				final Button navBackHome = ((Button) findViewById(R.id.addItem));
+				navBackHome.setVisibility(View.VISIBLE);
 			}
 		});
 	}
