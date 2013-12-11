@@ -24,7 +24,7 @@
                 android:id="@+id/productName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="35dp"
+                android:layout_marginBottom="25dp"
                 android:text="productName"
                 android:textColor="@color/text_color"
                 android:textSize="18sp" />
@@ -39,7 +39,7 @@
                 android:id="@+id/productBrand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="35dp"
+                android:layout_marginBottom="25dp"
                 android:text="productBrand"
                 android:textColor="@color/text_color"
                 android:textSize="18sp" />
@@ -54,7 +54,7 @@
                 android:id="@+id/priceInformation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="35dp"
+                android:layout_marginBottom="25dp"
                 android:text="Price Information"
                 android:textColor="@color/text_color"
                 android:textSize="18sp" />
@@ -69,7 +69,7 @@
                 android:id="@+id/expInformation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="35dp"
+                android:layout_marginBottom="20dp"
                 android:text="Expiration Information"
                 android:textColor="@color/text_color"
                 android:textSize="18sp" />
@@ -84,7 +84,7 @@
                 android:id="@+id/reviewInformation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="35dp"
+                android:layout_marginBottom="10dp"
                 android:text="review Information"
                 android:textColor="@color/text_color"
                 android:textSize="18sp" />
