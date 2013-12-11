@@ -1,5 +1,7 @@
 package com.ISU.shoppingsidekick;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -87,7 +89,14 @@ public class FoodResultsActivity extends Activity {
 				
 				productBrand.setText("Product brand: " + brand);
 				
-				expInformation.setText("Average Expiration: " + expirationInfo.getAvgHours() + " Hours");
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(new Date());
+				cal.add(Calendar.HOUR_OF_DAY, (int) expirationInfo.getAvgHours());
+				Date d = cal.getTime();
+				String expirationDate = d.toString();
+				String year = expirationDate.substring(expirationDate.length() - 4);
+				String date = expirationDate.substring(0, 10);
+				expInformation.setText("If bought today, this item will expire around " + date + ", " + year);
 				
 				priceInformation.setText("Average Price: " + "$" + priceInfo.getAvgPrice());
 				
