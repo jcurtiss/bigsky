@@ -11,7 +11,10 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -20,10 +23,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+
 public class HomeActivity extends Activity {
 
-	private Intent i;
-	
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,53 +33,6 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.activity_home);
         
     	final Account a = (Account) getIntent().getExtras().get("account");
-                
-	     // Gets an instance of the NotificationManager service
-	     final NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-     
-     Thread thread = new Thread(){
-         @Override
-         public void run(){
-				DatabaseAPI db = new DatabaseAPI();
-				List<CalendarItem> items = db.getUsersItems(a.getUserID());
-				for(int i = 0; i < items.size(); i++)
-				{
-					String content = "";
-					CalendarItem item = items.get(i);
-					Date dateStarted = item.getDateStarted();
-					Date dateExpired = item.getDateExpired();
-					Date currentDate = new Date();
-					double dateExpiredTime = dateExpired.getTime();
-					double dateStartedTime = dateStarted.getTime();
-					double currentDateTime = currentDate.getTime();
-					double time2 = dateExpiredTime - dateStartedTime;
-					double time3 = dateExpiredTime - currentDateTime;
-					double time4 = (double) (time3 / time2);
-					double time5 = (time4) * ((double) 100.0);
-					if(dateExpired.before(currentDate))
-					{
-						content = item.getFood().getName() + " has expired.";
-						db.removeCalendarItem(a.getUserID(), item.getID());
-					}
-					else if(time5 <= 10.0)
-					{
-						content = item.getFood().getName() + " will expire soon."; 
-					}
-					else
-					{
-						continue;
-					}
-			        NotificationCompat.Builder mBuilder =
-			        	    new NotificationCompat.Builder(HomeActivity.this)
-			        	    .setSmallIcon(R.drawable.icon)
-			        	    .setContentTitle("Shopping Sidekick Expiration")
-			        	    .setContentText(content);
-			        mNotifyMgr.notify(i, mBuilder.build());
-				}
-         }
-     };
-     thread.start();
-     
         
       //Scan button     
         Button goToScanBtn = (Button) findViewById(R.id.scan_button);
@@ -141,19 +96,21 @@ public class HomeActivity extends Activity {
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
-    
+         
     public void notOnClick() {
     	IntentIntegrator scanIntegrator = new IntentIntegrator(this);
 		scanIntegrator.initiateScan();
 	}
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
 		IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		final Account a = (Account) getIntent().getExtras().get("account");
 			if (scanningResult != null) {
 					String scanContent = scanningResult.getContents();
 					//String scanFormat = scanningResult.getFormatName();
 										
 					Intent i = new Intent(HomeActivity.this, FoodResultsActivity.class);
-					i.putExtra("scanID",scanContent);
+					i.putExtra("scanID", scanContent);
+					i.putExtra("account", a);
 					startActivity(i);
 					}
 			else{
@@ -162,5 +119,6 @@ public class HomeActivity extends Activity {
 				    toast.show();
 				}
 	}
+    
     
 }

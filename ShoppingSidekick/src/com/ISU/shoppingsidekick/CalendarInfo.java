@@ -37,7 +37,7 @@ public class CalendarInfo extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
-		
+		final Account a = (Account) getIntent().getExtras().get("account");
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_calendar_info);
@@ -60,6 +60,7 @@ public class CalendarInfo extends Activity {
 					Food food = foodItems.get(position);
 					Intent i = new Intent(CalendarInfo.this, FoodResultsActivity.class);
 					i.putExtra("scanID", food.getID());
+					i.putExtra("account", a);
 					startActivity(i);
 				}
 			}
