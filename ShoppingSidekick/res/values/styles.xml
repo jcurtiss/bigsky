@@ -35,7 +35,7 @@
 
     <style name="ListFont" parent="@android:style/Widget.ListView">
 	    <item name="android:textColor">@color/text_color</item>
-	    <item name="android:dividerHeight">10.0sp</item>
+	    <item name="android:dividerHeight">2.0sp</item>
 	</style>
     
     <style name="ButtonBarButton" />
